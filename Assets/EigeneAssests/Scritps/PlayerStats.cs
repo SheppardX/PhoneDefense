@@ -38,10 +38,11 @@ public class PlayerStats : MonoBehaviour {
 			yield return new WaitForSeconds(1);
 			waveCounter-=1;
 			startdelay.text ="Welle kommt in \n "+waveCounter;
+			if(waveCounter<=0){
+				startdelay.text ="GOO!!!";
+			}
 		}
-		if(waveCounter<=1){
-			startdelay.text ="GOO!!!";
-		}
+
 		if(waveCounter<=0){
 			Spawn.GetComponent<UnitSpawn>().enabled = true;
 			startdelay.renderer.enabled = false;

@@ -87,7 +87,10 @@ public class MainMenu : MonoBehaviour {
 			//if(GUI.Button(new Rect(0,165,300,50),"Greif an")) {
 				//game = PhotonNetwork.GetRoomList();
 			//}
-			if(GUI.Button(new Rect(0,220,300,50),"Zurück")){auswahl = "mainmenu";}
+			if(GUI.Button(new Rect(0,220,300,50),"Zurück")){
+				PhotonNetwork.Disconnect();
+				auswahl = "mainmenu";
+			}
 			GUILayout.EndArea();
 			GUILayout.BeginArea(new Rect(Screen.width-450,100,400,550),"Server / Spieler","Box");
 			ScrollServerList = GUILayout.BeginScrollView(ScrollServerList,GUILayout.MaxWidth(400));
