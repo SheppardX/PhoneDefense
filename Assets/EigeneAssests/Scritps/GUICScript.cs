@@ -1,10 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
-
-
-
 public class GUICScript : MonoBehaviour {
 	
 	public GameObject maincam;
@@ -26,11 +22,7 @@ public class GUICScript : MonoBehaviour {
 	public Texture2D[] textures;
 
 	private int layerMask = ~((1<<9)|(1<<8));
-	private Transform statsTran;
 	private Transform spielMenuTran;	
-	private Transform MGIconTran;
-	private Transform menuButtonTran;
-	private Transform settingsButtonTran;
 	
 	private CameraMovement camMov;
 	
@@ -41,9 +33,7 @@ public class GUICScript : MonoBehaviour {
 	
 	void Start(){
 		camMov = maincam.GetComponent<CameraMovement>();
-		menuButtonTran = menuButton.transform;
 		spielMenuTran = spielMenu.transform;
-		MGIconTran = MGIcon.transform;
 		if(!PhotonNetwork.isMasterClient&&PlayerPrefs.GetString("online").Equals("Online")){
 			GUIcam.camera.enabled = false;
 		}
@@ -51,15 +41,11 @@ public class GUICScript : MonoBehaviour {
 	
 	void Update(){
 		if(Turret_Placement.instance.buildPanalOpen){
-			menuButtonTran.position = new Vector3(Mathf.Lerp(menuButtonTran.position.x,1,(Time.time - startTime) / duration),menuButtonTran.position.y,menuButtonTran.position.z);
 			menuButton.renderer.material.mainTexture = textures[1];
-			spielMenuTran.position = new Vector3(Mathf.Lerp(spielMenuTran.position.x,4,(Time.time - startTime) / duration),spielMenuTran.position.y,spielMenuTran.position.z);
-			MGIconTran.position = new Vector3(Mathf.Lerp(MGIconTran.position.x,3.2f,(Time.time - startTime) / duration),MGIconTran.position.y,MGIconTran.position.z);
+			spielMenuTran.position = new Vector3(Mathf.Lerp(spielMenuTran.position.x,4.45f,(Time.time - startTime) / duration),spielMenuTran.position.y,spielMenuTran.position.z);
 		}else{
-			menuButtonTran.position = new Vector3(Mathf.Lerp(menuButtonTran.position.x,8,(Time.time - startTime) / duration),menuButtonTran.position.y,menuButtonTran.position.z);
 			menuButton.renderer.material.mainTexture = textures[0];
 			spielMenuTran.position = new Vector3(Mathf.Lerp(spielMenuTran.position.x,11,(Time.time - startTime) / duration),spielMenuTran.position.y,spielMenuTran.position.z);
-			MGIconTran.position = new Vector3(Mathf.Lerp(MGIconTran.position.x,10.2f,(Time.time - startTime) / duration),MGIconTran.position.y,MGIconTran.position.z);
 		}
 		if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) {
 			Ray ray = GUIcam.camera.ScreenPointToRay (Input.mousePosition);
@@ -88,8 +74,8 @@ public class GUICScript : MonoBehaviour {
 		}
 		if(Spawn.GetComponent<UnitSpawn>().enabled)
 			wave.text = UnitSpawn.instance.curWave.ToString ();
-		live.text = PlayerStats.instance.livePoints.ToString ();
-		money.text = PlayerStats.instance.money.ToString ();
+			live.text = PlayerStats.instance.livePoints.ToString ();
+			money.text = PlayerStats.instance.money.ToString ();
 
 		}
 	
