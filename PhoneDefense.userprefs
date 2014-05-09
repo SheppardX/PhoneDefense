@@ -1,8 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\EigeneAssests\Scritps\GUICScript.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\EigeneAssests\Scritps\Turret_MG_ORIGINAL.cs">
     <Files>
-      <File FileName="Assets\EigeneAssests\Scritps\GUICScript.cs" Line="61" Column="44" />
+      <File FileName="Assets\EigeneAssests\Scritps\Turret_MG_ORIGINAL.cs" Line="97" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
