@@ -11,8 +11,6 @@ Project("{3B76ACD9-0B21-025A-2027-014A58A32643}") = "PhoneDefense", "Assembly-Un
 EndProject
 Project("{3B76ACD9-0B21-025A-2027-014A58A32643}") = "PhoneDefense", "Assembly-UnityScript.unityproj", "{0BD0439E-86F0-5F18-31D2-487D0FAF6E72}"
 EndProject
-Project("{3B76ACD9-0B21-025A-2027-014A58A32643}") = "PhoneDefense", "Assembly-UnityScript-Editor.unityproj", "{2A7AF26E-E8FC-E24D-F1F0-A8FC14D08863}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,15 +37,11 @@ Global
 		{0BD0439E-86F0-5F18-31D2-487D0FAF6E72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BD0439E-86F0-5F18-31D2-487D0FAF6E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BD0439E-86F0-5F18-31D2-487D0FAF6E72}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2A7AF26E-E8FC-E24D-F1F0-A8FC14D08863}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A7AF26E-E8FC-E24D-F1F0-A8FC14D08863}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2A7AF26E-E8FC-E24D-F1F0-A8FC14D08863}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A7AF26E-E8FC-E24D-F1F0-A8FC14D08863}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																																																																																																																																																																																																																																																																																							GlobalSection(MonoDevelopProperties) = preSolution
+																																																																																																																																																																																																																																																																																																					GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1

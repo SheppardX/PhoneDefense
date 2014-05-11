@@ -39,8 +39,8 @@ public class Turret_Placement : MonoBehaviour {
 			foreach(GameObject item in placementChildrenRenderer){
 				item.GetComponent<Renderer>().enabled = true;
 			}
-			Ray ray = GUIcam.camera.ScreenPointToRay(Input.mousePosition);
-			Ray rayMain = maincam.camera.ScreenPointToRay(Input.mousePosition);
+			Ray ray = GUIcam.camera.ScreenPointToRay(Input.GetTouch (0).position);
+			Ray rayMain = maincam.camera.ScreenPointToRay(Input.GetTouch (0).position);
 			RaycastHit hit = new RaycastHit();
 			if(Physics.Raycast(ray, out hit, 1000, layerMask)||Physics.Raycast(rayMain, out hit, 1000, layerMask)){
 				//Debug.Log(hit.collider.name);
@@ -66,7 +66,7 @@ public class Turret_Placement : MonoBehaviour {
 			
 		}
 		
-		if(Input.GetMouseButton(0) && lastHitObj){
+		if((Input.GetTouch (0).phase == TouchPhase.Began) && lastHitObj){
 			if(lastHitObj.tag == "PlacementPlane_Open" && strucureIndex > 0){
 				if(PlayerStats.instance.money > cost[strucureIndex]){
 					if(PlayerPrefs.GetString("online").Equals("Online")){

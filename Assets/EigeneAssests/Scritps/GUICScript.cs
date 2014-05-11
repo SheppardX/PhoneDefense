@@ -47,12 +47,13 @@ public class GUICScript : MonoBehaviour {
 			menuButton.renderer.material.mainTexture = textures[0];
 			spielMenuTran.position = new Vector3(Mathf.Lerp(spielMenuTran.position.x,11,(Time.time - startTime) / duration),spielMenuTran.position.y,spielMenuTran.position.z);
 		}
-		if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) {
-			Ray ray = GUIcam.camera.ScreenPointToRay (Input.mousePosition);
+		//Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began   Input.GetMouseButtonDown(0)
+		if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began ) {
+			Ray ray = GUIcam.camera.ScreenPointToRay (Input.GetTouch (0).position);
 			RaycastHit hit;
 			if(Physics.Raycast(ray, out hit, 1000, layerMask)){
 				if(hit.collider.name.Equals("Spielmenubtn")){
-						if(Input.GetTouch (0).phase == TouchPhase.Began){
+					if(Input.GetTouch (0).phase == TouchPhase.Began){
 						Turret_Placement.instance.buildPanalOpen = !Turret_Placement.instance.buildPanalOpen;
 						MGIcon.renderer.material.mainTexture = textures[2];
 						Turret_Placement.instance.strucureIndex = 0;

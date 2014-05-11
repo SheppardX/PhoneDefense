@@ -33,6 +33,9 @@ public class MGUpgrades : Turret {
 	public override int getDamageUpdate (int level)
 	{
 		switch (level) {
+		case 0:
+			dmg = dmgArray[level];
+			break;
 		case 1:
 			dmg = dmgArray[level];
 			break;
@@ -43,9 +46,6 @@ public class MGUpgrades : Turret {
 			dmg = dmgArray[level];
 			break;
 		case 4:
-			dmg = dmgArray[level];
-			break;
-		case 5:
 			dmg = dmgArray[level];
 			break;
 		}
@@ -55,6 +55,9 @@ public class MGUpgrades : Turret {
 	public override int getHealthUpdate (int level)
 	{
 		switch (level) {
+		case 0:
+			health = healthArray[level];
+			break;
 		case 1:
 			health = healthArray[level];
 			break;
@@ -65,9 +68,6 @@ public class MGUpgrades : Turret {
 			health = healthArray[level];
 			break;
 		case 4:
-			health = healthArray[level];
-			break;
-		case 5:
 			health = healthArray[level];
 			break;
 		}
@@ -77,6 +77,9 @@ public class MGUpgrades : Turret {
 	public override int getRangeUpdate (int level)
 	{
 		switch (level) {
+		case 0:
+			range = rangeArray[level];
+			break;
 		case 1:
 			range = rangeArray[level];
 			break;
@@ -87,9 +90,6 @@ public class MGUpgrades : Turret {
 			range = rangeArray[level];
 			break;
 		case 4:
-			range = rangeArray[level];
-			break;
-		case 5:
 			range = rangeArray[level];
 			break;
 		}
@@ -99,6 +99,9 @@ public class MGUpgrades : Turret {
 	public override int getDamageCost (int level)
 	{
 		switch (level) {
+		case 0:
+			dmgCost = dmgCostArray[level];
+			break;
 		case 1:
 			dmgCost = dmgCostArray[level];
 			break;
@@ -109,9 +112,6 @@ public class MGUpgrades : Turret {
 			dmgCost = dmgCostArray[level];
 			break;
 		case 4:
-			dmgCost = dmgCostArray[level];
-			break;
-		case 5:
 			dmgCost = dmgCostArray[level];
 			break;
 		}
@@ -121,6 +121,9 @@ public class MGUpgrades : Turret {
 	public override int getHealthCost (int level)
 	{
 		switch (level) {
+		case 0:
+			healthCost = healthCostArray[level];
+			break;
 		case 1:
 			healthCost = healthCostArray[level];
 			break;
@@ -131,9 +134,6 @@ public class MGUpgrades : Turret {
 			healthCost = healthCostArray[level];
 			break;
 		case 4:
-			healthCost = healthCostArray[level];
-			break;
-		case 5:
 			healthCost = healthCostArray[level];
 			break;
 		}
@@ -143,6 +143,9 @@ public class MGUpgrades : Turret {
 	public override int getRangeCost (int level)
 	{
 		switch (level) {
+		case 0:
+			rangeCost = rangeCostArray[level];
+			break;
 		case 1:
 			rangeCost = rangeCostArray[level];
 			break;
@@ -153,9 +156,6 @@ public class MGUpgrades : Turret {
 			rangeCost = rangeCostArray[level];
 			break;
 		case 4:
-			rangeCost = rangeCostArray[level];
-			break;
-		case 5:
 			rangeCost = rangeCostArray[level];
 			break;
 		}
