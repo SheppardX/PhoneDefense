@@ -38,7 +38,6 @@ public class UnitSpawn : MonoBehaviour
 	//Is the spawn system currently spawning enemies
 	private bool isSpawning = false;
 	private bool isLastDead = false;
-
 	//The initial maximum number of enemies per wave
 	public int maxEnemies = 5;
 
@@ -62,7 +61,7 @@ public class UnitSpawn : MonoBehaviour
 
 	void Update ()
 	{
-	
+		
 		//Check if the script is NOT spawning enemies
 		if(!PhotonNetwork.isMasterClient){
 			if (!isSpawning) {

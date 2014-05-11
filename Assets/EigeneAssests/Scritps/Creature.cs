@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class Creature : MonoBehaviour {
+
 	public float walkSpeed = 2.0f;
 	public float rotateSpeed = 180.0f;
 	public float friction = 0.01f;
@@ -12,38 +13,24 @@ public class Creature : MonoBehaviour {
 	public float curHealth = 100;
 	public float healthBarLength;
 	public Animation animatedCharakter;
-	public static int floorLayerMask;
-	float specialAnimTimer;
-	float forwardFaktor;
-	Vector3 dir;
-	Vector3 planarTarget;
+	public static int floorLayerMask;	
 	public bool live = true;
-	Quaternion lookAtRotation;
-	Vector3 velocity;
-	Vector2 targetPos;
+	private float specialAnimTimer;
+	private float forwardFaktor;
+	private Vector3 dir;
+	private Vector3 planarTarget;
+	private Quaternion lookAtRotation;
+	private Vector3 velocity;
+	private Vector2 targetPos;
 	[HideInInspector] public Vector3 targetPosition;
 	
-	void Start () {
+	void Awake () {
 		floorLayerMask = 1 << LayerMask.NameToLayer("Floor");
 		targetPosition = transform.position +transform.forward;
 		live = true;
-
 	}
 	
 	void Update () {
-		/**if(this.rigidbody.velocity.magnitude > 1.0f){
-			animatedCharakter.CrossFade("walk",0.25f);
-			specialAnimTimer = 0.0f;
-		}else{
-			specialAnimTimer += Time.deltaTime;
-			if(specialAnimTimer > 5.0f){
-				specialAnimTimer = -animatedCharakter["idleSpecial"].length;
-				animatedCharakter.CrossFade("idleSpecial",0.25f);
-			} else if (specialAnimTimer > 0.0f){
-				animatedCharakter.CrossFade("idle",0.25f);	
-			}
-		}
-     		**/
 		if(curHealth <= 0){			
 			live = false;
 			PlayerStats.instance.money +=15;
@@ -93,5 +80,4 @@ public class Creature : MonoBehaviour {
 		targetPos = Camera.main.WorldToScreenPoint (transform.position);
 		GUI.Box(new Rect(targetPos.x, Screen.height - targetPos.y, 60, 20), curHealth + "/" + maxHealth);
 	}
-
 }
