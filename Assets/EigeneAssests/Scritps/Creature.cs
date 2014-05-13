@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+[RequireComponent (typeof(EnemiAI))]
+[RequireComponent (typeof(Rigidbody))]
+[RequireComponent (typeof(CapsuleCollider))]
+[RequireComponent (typeof(PhotonView))]
 public class Creature : MonoBehaviour {
 
-	public float walkSpeed = 2.0f;
+	public float walkSpeed = 100.0f;
 	public float rotateSpeed = 180.0f;
-	public float friction = 0.01f;
+	public float friction = 0.1f;
 	public float minLookDistance = 0.1f;
 	public float minDistance = 1.5f;
-	public float minLookAngle = 20.0f;
-	public int maxHealth = 100;	
-	public float curHealth = 100;
+	public float minLookAngle = 150.0f;
+	public int maxHealth = 10;	
+	public float curHealth = 10;
 	public float healthBarLength;
 	public Animation animatedCharakter;
 	public static int floorLayerMask;	

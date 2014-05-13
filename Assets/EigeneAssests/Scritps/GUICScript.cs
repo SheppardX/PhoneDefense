@@ -41,9 +41,11 @@ public class GUICScript : MonoBehaviour {
 	
 	void Update(){
 		if(Turret_Placement.instance.buildPanalOpen){
+			camMov.enabled = false;
 			menuButton.renderer.material.mainTexture = textures[1];
 			spielMenuTran.position = new Vector3(Mathf.Lerp(spielMenuTran.position.x,4.45f,(Time.time - startTime) / duration),spielMenuTran.position.y,spielMenuTran.position.z);
 		}else{
+			camMov.enabled = true;
 			menuButton.renderer.material.mainTexture = textures[0];
 			spielMenuTran.position = new Vector3(Mathf.Lerp(spielMenuTran.position.x,11,(Time.time - startTime) / duration),spielMenuTran.position.y,spielMenuTran.position.z);
 		}

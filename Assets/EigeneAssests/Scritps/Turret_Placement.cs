@@ -66,7 +66,7 @@ public class Turret_Placement : MonoBehaviour {
 			
 		}
 		
-		if((Input.GetTouch (0).phase == TouchPhase.Began) && lastHitObj){
+		if(Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began && lastHitObj){
 			if(lastHitObj.tag == "PlacementPlane_Open" && strucureIndex > 0){
 				if(PlayerStats.instance.money > cost[strucureIndex]){
 					if(PlayerPrefs.GetString("online").Equals("Online")){
