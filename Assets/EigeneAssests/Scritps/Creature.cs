@@ -18,6 +18,9 @@ public class Creature : MonoBehaviour {
 	public Animation animatedCharakter;
 	public static int floorLayerMask;	
 	public bool live = true;
+	public Texture2D progressBarEmpty;
+	public Texture2D progressBarFull;
+	private Vector2 size = new Vector2(60,20);
 	private float specialAnimTimer;
 	private float forwardFaktor;
 	private Vector3 dir;
@@ -26,6 +29,7 @@ public class Creature : MonoBehaviour {
 	private Vector3 velocity;
 	private Vector2 targetPos;
 	[HideInInspector] public Vector3 targetPosition;
+
 	
 	void Awake () {
 		floorLayerMask = 1 << LayerMask.NameToLayer("Floor");
@@ -70,7 +74,7 @@ public class Creature : MonoBehaviour {
 			curHealth = maxHealth;		
 		if(maxHealth < 1)		
 			maxHealth = 1;		
-		healthBarLength = (Screen.width / 6) * (curHealth /(float)maxHealth);
+		healthBarLength = curHealth /(float)maxHealth;
 		
 	}
 	void OnDrawGizmos(){
@@ -81,6 +85,11 @@ public class Creature : MonoBehaviour {
 
 	void OnGUI(){			
 		targetPos = Camera.main.WorldToScreenPoint (transform.position);
-		GUI.Box(new Rect(targetPos.x, Screen.height - targetPos.y, 60, 20), curHealth + "/" + maxHealth);
+		GUI.BeginGroup(new Rect(targetPos.x, Screen.height - targetPos.y,60,20));
+			GUI.Box(new Rect(0,0, size.x, size.y),progressBarEmpty);
+			GUI.BeginGroup(new Rect(0,0,size.x*healthBarLength,size.y));
+		GUI.Box(new Rect(0,0,size.x,size.y),progressBarFull);
+			GUI.EndGroup();
+		GUI.EndGroup();
 	}
 }

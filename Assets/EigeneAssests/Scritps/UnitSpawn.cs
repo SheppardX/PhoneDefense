@@ -30,7 +30,7 @@ public class UnitSpawn : MonoBehaviour
 	private float enemyHeight;
 
 	//!!!IMPORTANT!!! SEVERAL OF UNITS
-	public GameObject[] Units;
+	public string[] Units;
 
 	//What is the current wave
 	public int curWave = 1;
@@ -49,6 +49,7 @@ public class UnitSpawn : MonoBehaviour
 
 	void Start ()
 	{
+		Units = AttackList.instance.UnitsName;
 		instance = this;
 		//Find what the height of the enemy's CharacterContoller component is
 		// enemyHeight = enemyPrefab.GetComponent<BoxCollider>().height;
@@ -100,7 +101,7 @@ public class UnitSpawn : MonoBehaviour
 			GameObject enemyPrefab2 = enemyPrefab;
 			GameObject clone;			
 			if(PlayerPrefs.GetString("online").Equals("Online")){
-				clone = (GameObject)PhotonNetwork.Instantiate ("MachinMinion", spawnPoint, Quaternion.identity,0);
+				clone = (GameObject)PhotonNetwork.Instantiate (Units[i], spawnPoint, Quaternion.identity,0);
 			}else{
 				clone = (GameObject)Instantiate (enemyPrefab, spawnPoint, Quaternion.identity);
 			}

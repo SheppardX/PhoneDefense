@@ -31,7 +31,7 @@ function Update (){
 	if (desiredPosition.y > 275 || 50 > desiredPosition.y) {
 		movement.y = 0;
 	}
-	if (desiredPosition.z > 422 || 17 > desiredPosition.z) {
+	if (desiredPosition.z > 422 || 0 > desiredPosition.z) {
 		movement.z = 0;
 	}
 	

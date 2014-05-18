@@ -65,7 +65,7 @@ public class MainMenu : MonoBehaviour {
 			GUILayout.BeginArea(new Rect (10,250, Screen.width, 500));
 			if(GUI.Button(new Rect(0,0,450,50),"Geschlängelte Systeme")){
 				PlayerPrefs.SetString("online","Offline");
-				PlayerPrefs.SetInt("Budget",100);
+				PlayerPrefs.SetInt("Budget",10000);
 				PlayerPrefs.SetInt("InCome",3);
 				Application.LoadLevel("Geschlängelte_Systeme");
 			}

@@ -39,8 +39,8 @@ public class Turret_Placement : MonoBehaviour {
 			foreach(GameObject item in placementChildrenRenderer){
 				item.GetComponent<Renderer>().enabled = true;
 			}
-			Ray ray = GUIcam.camera.ScreenPointToRay(Input.GetTouch (0).position);
-			Ray rayMain = maincam.camera.ScreenPointToRay(Input.GetTouch (0).position);
+			Ray ray = GUIcam.camera.ScreenPointToRay(Input.mousePosition);
+			Ray rayMain = maincam.camera.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit = new RaycastHit();
 			if(Physics.Raycast(ray, out hit, 1000, layerMask)||Physics.Raycast(rayMain, out hit, 1000, layerMask)){
 				//Debug.Log(hit.collider.name);
@@ -65,8 +65,8 @@ public class Turret_Placement : MonoBehaviour {
 			}
 			
 		}
-		
-		if(Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began && lastHitObj){
+		//Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began && lastHitObj
+		if(Input.GetMouseButtonDown(0) && lastHitObj){
 			if(lastHitObj.tag == "PlacementPlane_Open" && strucureIndex > 0){
 				if(PlayerStats.instance.money > cost[strucureIndex]){
 					if(PlayerPrefs.GetString("online").Equals("Online")){
@@ -76,6 +76,7 @@ public class Turret_Placement : MonoBehaviour {
 						newStructure = (GameObject)Instantiate(allStrucutres[strucureIndex], lastHitObj.transform.position-startPos, Quaternion.identity);
 					}
 					newStructure.name = "MGTurret";
+					newStructure.GetComponent<Turret_MG_ORIGINAL>().placePlane = lastHitObj;
 					Vector3 temp = newStructure.transform.localEulerAngles;
 					PlayerStats.instance.money -= cost[strucureIndex];
 					temp.y = (Random.Range(0,360));

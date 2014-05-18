@@ -3,6 +3,9 @@ using System.Collections;
 
 public class PlayerStats : MonoBehaviour {
 	public static PlayerStats instance;
+	public Camera AttCam;
+	public Camera DefCam;
+
 	public int setLivePoins = 10;
 	public int money;
 	public int livePoints;
@@ -19,6 +22,14 @@ public class PlayerStats : MonoBehaviour {
 		money = PlayerPrefs.GetInt("Budget");
 		InComeSek = PlayerPrefs.GetInt("InCome");
 		StartCoroutine(startTimer ());
+		if(PhotonNetwork.isMasterClient && PlayerPrefs.GetString("online").Equals("Online")||PlayerPrefs.GetString("online").Equals("Offline")){
+			AttCam.camera.enabled = false;			
+			GetComponent<AttackGUI>().enabled = false;
+		}
+		else{
+			DefCam.camera.enabled = false;
+			GetComponent<DefendGUI>().enabled = false;
+		}
 	}
 
 	void Update(){
@@ -45,7 +56,7 @@ public class PlayerStats : MonoBehaviour {
 
 		if(waveCounter<=0){
 			Spawn.GetComponent<UnitSpawn>().enabled = true;
-			startdelay.renderer.enabled = false;
+			DestroyObject(startdelay);
 		}	
 
 

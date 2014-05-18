@@ -46,16 +46,21 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\EigeneAssests\Scritps\AttackGUI.cs" />
+     <Compile Include="Assets\EigeneAssests\Scritps\AttackList.cs" />
      <Compile Include="Assets\EigeneAssests\Scritps\CameraMovement.cs" />
      <Compile Include="Assets\EigeneAssests\Scritps\Creature.cs" />
+     <Compile Include="Assets\EigeneAssests\Scritps\DefUpgradeMenu.cs" />
+     <Compile Include="Assets\EigeneAssests\Scritps\DefendGUI.cs" />
+     <Compile Include="Assets\EigeneAssests\Scritps\DiscriptionMenu.cs" />
      <Compile Include="Assets\EigeneAssests\Scritps\EnemiAI.cs" />
      <Compile Include="Assets\EigeneAssests\Scritps\EnemyGlobalList.cs" />
      <Compile Include="Assets\EigeneAssests\Scritps\FPSDisplayScript.cs" />
-     <Compile Include="Assets\EigeneAssests\Scritps\GUICScript.cs" />
      <Compile Include="Assets\EigeneAssests\Scritps\GUISizer.cs" />
      <Compile Include="Assets\EigeneAssests\Scritps\LevelSelection.cs" />
      <Compile Include="Assets\EigeneAssests\Scritps\MGUpgrades.cs" />
      <Compile Include="Assets\EigeneAssests\Scritps\MainMenu.cs" />
+     <Compile Include="Assets\EigeneAssests\Scritps\MinionUpgrade.cs" />
      <Compile Include="Assets\EigeneAssests\Scritps\MultiplayerManager.cs" />
      <Compile Include="Assets\EigeneAssests\Scritps\OptionsMenu.cs" />
      <Compile Include="Assets\EigeneAssests\Scritps\PlayerStats.cs" />
@@ -64,7 +69,7 @@
      <Compile Include="Assets\EigeneAssests\Scritps\Turret_MG_ORIGINAL.cs" />
      <Compile Include="Assets\EigeneAssests\Scritps\Turret_Placement.cs" />
      <Compile Include="Assets\EigeneAssests\Scritps\UnitSpawn.cs" />
-     <Compile Include="Assets\EigeneAssests\Scritps\UpgradeMenu.cs" />
+     <Compile Include="Assets\EigeneAssests\Scritps\Units.cs" />
      <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\CustomTypes.cs" />
      <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Enums.cs" />
      <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Extensions.cs" />
