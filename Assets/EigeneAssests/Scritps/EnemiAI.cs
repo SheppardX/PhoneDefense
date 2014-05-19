@@ -5,15 +5,13 @@ public class EnemiAI : MonoBehaviour {
 	public Transform player;
 	public Vector3[] targetPoints;
 	public int targetIndex = 0;
-	public float range = 60f;
+	public float range = 30f;
 	public float minPlayerDistance = 8.0f;
 	public float maxPlayerDistance = 12.0f;
 	public Transform weapon;
 	public GameObject[] enemyObjList;
 	public float distanceToEnemy;
 	public int dmgLvl;
-	public int healthLvl;	
-	public int speedLvl;	
 	public float rotationDamp = 2.0f;
 	private MinionUpgrade upgrade;
 	private Quaternion rotate;
@@ -40,6 +38,8 @@ public class EnemiAI : MonoBehaviour {
 		if (CurrentTarget == null) {
 			rotate = Quaternion.identity;	
 		} else {
+			if(distanceToEnemy > range)
+				searchForNewTarget();
 			rotate = Quaternion.LookRotation (CurrentTargetTransform.position - weapon.position);	
 			FireProjectile ();
 		}
@@ -79,7 +79,7 @@ public class EnemiAI : MonoBehaviour {
 		//TODO als globale Singeltonliste 
 		enemyObjList = enemyList.EnemyListTurret;
 		
-		foreach (GameObject enemy in enemyObjList) {
+		foreach(GameObject enemy in enemyObjList) {
 			distanceToEnemy = Vector3.Distance (enemy.transform.position, weapon.position);	
 			if (distanceToEnemy <= range)
 				return enemy;

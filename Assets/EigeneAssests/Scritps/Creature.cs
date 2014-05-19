@@ -12,14 +12,17 @@ public class Creature : MonoBehaviour {
 	public float minLookDistance = 0.1f;
 	public float minDistance = 1.5f;
 	public float minLookAngle = 150.0f;
-	public int maxHealth = 10;	
-	public float curHealth = 10;
+	public int maxHealth;	
+	public float curHealth;
 	public float healthBarLength;
 	public Animation animatedCharakter;
 	public static int floorLayerMask;	
-	public bool live = true;
+	public bool live = true;	
+	public int healthLvl;	
+	public int speedLvl;	
 	public Texture2D progressBarEmpty;
 	public Texture2D progressBarFull;
+	private MinionUpgrade upgrade;
 	private Vector2 size = new Vector2(60,20);
 	private float specialAnimTimer;
 	private float forwardFaktor;
@@ -32,9 +35,15 @@ public class Creature : MonoBehaviour {
 
 	
 	void Awake () {
+		healthLvl = 0;
+		speedLvl = 0;
 		floorLayerMask = 1 << LayerMask.NameToLayer("Floor");
 		targetPosition = transform.position +transform.forward;
 		live = true;
+		upgrade = MinionUpgrade.instance;
+		curHealth = (float)upgrade.getHealthUpdate(healthLvl);
+		maxHealth = upgrade.getHealthUpdate(healthLvl);
+		healthBarLength = curHealth /(float)upgrade.getHealthUpdate(healthLvl);
 	}
 	
 	void Update () {
@@ -75,8 +84,9 @@ public class Creature : MonoBehaviour {
 		if(maxHealth < 1)		
 			maxHealth = 1;		
 		healthBarLength = curHealth /(float)maxHealth;
-		
+
 	}
+
 	void OnDrawGizmos(){
 		Gizmos.color = Color.red;
 		Gizmos.DrawLine(transform.position, targetPosition);

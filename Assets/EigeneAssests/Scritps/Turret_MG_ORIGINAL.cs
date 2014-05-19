@@ -122,14 +122,15 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 		instance = this;
 		startTime = Time.time;
 		placed = true;	
-		yOld = ObjPosition + Turret_Placement.instance.startPos;
-	}
-	void Start(){
+		yOld = ObjPosition + Turret_Placement.instance.startPos;			
 		view = PhotonView.Get(this);
 		enemyList = EnemyGlobalList.instance;
 		upgrade = MGUpgrades.instance;
 		curHealth = (float)upgrade.getHealthUpdate(healthLvl);
 		maxHealth = upgrade.getHealthUpdate(healthLvl);
+		healthBarLength = curHealth /(float)maxHealth;
+	}
+	void Start(){
 	}
 
 	void Update ()
@@ -142,8 +143,10 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 		if (CurrentTarget == null) {
 				rotate = Quaternion.identity;	
 		} else {
+			if(distanceToEnemy > upgrade.getRangeUpdate(rangeLvl))
+				searchForNewTarget();
 			rotate = Quaternion.LookRotation (CurrentTargetTransform.position - TurretMG);	
-				FireProjectile ();
+			FireProjectile ();
 		}
 		Debug.DrawRay (TurretMG, forward * upgrade.getRangeUpdate(rangeLvl), Color.red);
 		turretMG.rotation = Quaternion.Lerp (turretMG.rotation, rotate, Time.deltaTime * rotationDamp);
