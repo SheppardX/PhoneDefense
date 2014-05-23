@@ -138,7 +138,7 @@ public class MainMenu : MonoBehaviour {
 			GUILayout.BeginArea(new Rect(Screen.width/2+250,250,400,600));
 			GUILayout.Label("Map Settings");
 			GUILayout.Space(30);
-			GUI.Label(new Rect(0,55,100,50),"Bugdet(25-1000000 :");
+			GUI.Label(new Rect(0,55,100,50),"Bugdet(25-1000 :");
 			GUI.Label(new Rect(0,110,125,50),"Einkommen/sek(1-10) :");
 			budget = GUI.TextField(new Rect(130,55,200,50),budget);
 			budget = Regex.Replace(budget, "[^0-9]", "");
@@ -153,24 +153,20 @@ public class MainMenu : MonoBehaviour {
 
 					if(budgetINT >= 25 && budgetINT <= 1000){
 						MultiplayerManager.instance.currentMap.budget = budgetINT;
-						PlayerPrefs.SetInt("Budget",budgetINT);
 					}
 					else {
-						budget = "1000";
+						budget = "100";
 						budgetINT = int.Parse(budget);
 						MultiplayerManager.instance.currentMap.budget = budgetINT;
-						PlayerPrefs.SetInt("Budget",budgetINT);
 					}
 
 					if(InComeInt >= 1 && InComeInt <= 10){
 						MultiplayerManager.instance.currentMap.inComeSec = InComeInt;
-						PlayerPrefs.SetInt("InCome",InComeInt);
 					}
 					else {
-						InCome = "10";
+						InCome = "1";
 						InComeInt = int.Parse(InCome);
 						MultiplayerManager.instance.currentMap.inComeSec = InComeInt;
-						PlayerPrefs.SetInt("InCome",InComeInt);
 					}
 					MultiplayerManager.instance.saveSettings();
 				}

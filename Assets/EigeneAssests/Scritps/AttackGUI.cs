@@ -21,16 +21,30 @@ public class AttackGUI : MonoBehaviour {
 	public TextMesh money;
 	public string[] aviableUnits;
 	public GUIStyle font;
-	
+	public TextMesh damage;
+	public TextMesh health;
+	public TextMesh speed;
+	public TextMesh damageCost;
+	public TextMesh healthCost;
+	public TextMesh speedCost;
 	public Texture2D[] textures;
+	public GameObject dmgPlusBtn;
+	public GameObject htlPlusBtn;
+	public GameObject spdPlusBtn;
 
 	private int layerMask = ~((1<<9)|(1<<8));
 	private AttackList list;
 	private bool menu;
 	private CameraMovement camMov;
-	
+	private MinionUpgrade upgrade;
 	private float startTime = 0.0f;
 	private float duration = 58.0f;
+	private int dmgTxt;
+	private int healthTxt;
+	private int speedTxt;
+	private int dmgCostTxt;
+	private int healthCostTxt;
+	private int speedCostTxt;
 	public int index;
 	private bool toggle= false;
 
@@ -58,6 +72,9 @@ public class AttackGUI : MonoBehaviour {
 		set{
 			right.transform.position = value;
 		}
+	}
+	void Awake(){
+		upgrade = MinionUpgrade.instance;
 	}
 	void Start(){
 		instance = this;
@@ -134,8 +151,35 @@ public class AttackGUI : MonoBehaviour {
 					if(Input.GetMouseButtonDown(0)){
 						list.UnitsName = unitsName;
 					}
+				break;
+				case "DMG+":
+					if(Input.GetTouch (0).phase == TouchPhase.Began){
+						if(upgrade.DamageLvl <= 4 && PlayerStats.instance.money > dmgCostTxt){	
+							PlayerStats.instance.money -= dmgCostTxt;
+							upgrade.DamageLvl +=1;
+							upgradeRefresh();
+						}
+					}
 					break;
-				}
+				case "HTL+":
+					if(Input.GetTouch (0).phase == TouchPhase.Began){
+						if(upgrade.HealthLvl <= 4 && PlayerStats.instance.money > healthCostTxt){		
+							PlayerStats.instance.money -= healthCostTxt;
+							upgrade.HealthLvl +=1;
+							upgradeRefresh();
+						}
+					}
+					break;
+				case "SPEED+":
+					if(Input.GetTouch (0).phase == TouchPhase.Began){
+						if(upgrade.SpeedLvl <= 4 && PlayerStats.instance.money > speedCostTxt){
+							PlayerStats.instance.money -= speedCostTxt;
+							upgrade.SpeedLvl +=1;
+							upgradeRefresh();
+						}
+					}
+					break;
+				}			
 			}
 		}
 		if(index <= 0){
@@ -152,5 +196,14 @@ public class AttackGUI : MonoBehaviour {
 			wave.text = UnitSpawn.instance.curWave.ToString ();
 		live.text = PlayerStats.instance.livePoints.ToString ();
 		money.text = PlayerStats.instance.money.ToString ();
+	}
+
+	void upgradeRefresh(){
+		dmgTxt = upgrade.getDamageUpdate(upgrade.DamageLvl);
+		healthTxt = upgrade.getHealthUpdate(upgrade.HealthLvl);
+		speedTxt = upgrade.getSpeedUpdate(upgrade.SpeedLvl);
+		dmgCostTxt = upgrade.getDamageCost(upgrade.DamageLvl+1);
+		healthCostTxt = upgrade.getHealthCost(upgrade.HealthLvl+1);
+		speedCostTxt = upgrade.getSpeedCost(upgrade.SpeedLvl+1);
 	}
 }

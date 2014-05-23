@@ -67,7 +67,7 @@ public class Turret_Placement : MonoBehaviour {
 		}
 		//Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began && lastHitObj
 		if(Input.GetMouseButtonDown(0) && lastHitObj){
-			if(lastHitObj.tag == "PlacementPlane_Open" && strucureIndex > 0){
+			if(!lastHitObj.GetComponent<PlacementPlane>().PlacePlane && strucureIndex > 0){
 				if(PlayerStats.instance.money > cost[strucureIndex]){
 					if(PlayerPrefs.GetString("online").Equals("Online")){
 						newStructure = (GameObject)PhotonNetwork.Instantiate(allStrucutres[strucureIndex].name, lastHitObj.transform.position-startPos, Quaternion.identity,0);
@@ -76,12 +76,11 @@ public class Turret_Placement : MonoBehaviour {
 						newStructure = (GameObject)Instantiate(allStrucutres[strucureIndex], lastHitObj.transform.position-startPos, Quaternion.identity);
 					}
 					newStructure.name = "MGTurret";
-					newStructure.GetComponent<Turret_MG_ORIGINAL>().placePlane = lastHitObj;
 					Vector3 temp = newStructure.transform.localEulerAngles;
 					PlayerStats.instance.money -= cost[strucureIndex];
 					temp.y = (Random.Range(0,360));
 					newStructure.transform.localEulerAngles = temp;
-					lastHitObj.tag = "PlacementPlane_Taken";
+					lastHitObj.GetComponent<PlacementPlane>().PlacePlane = true;
 				}
 			}
 		}

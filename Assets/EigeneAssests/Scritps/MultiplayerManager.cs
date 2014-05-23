@@ -48,7 +48,9 @@ public class MultiplayerManager : MonoBehaviour {
 
 
 	[RPC]
-	void Client_GetMultiplayerMatchSettings(string map, int bugdet, int inComeSec){
+	void Client_GetMultiplayerMatchSettings(string map, int bugdet, int inComeSec){		
+		PlayerPrefs.SetInt("InCome",inComeSec);
+		PlayerPrefs.SetInt("Budget",bugdet);
 		currentMap = GetMap(map);
 		currentMap.budget = bugdet;
 		currentMap.inComeSec = inComeSec;

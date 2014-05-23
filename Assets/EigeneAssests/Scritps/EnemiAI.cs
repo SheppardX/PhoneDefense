@@ -11,7 +11,6 @@ public class EnemiAI : MonoBehaviour {
 	public Transform weapon;
 	public GameObject[] enemyObjList;
 	public float distanceToEnemy;
-	public int dmgLvl;
 	public float rotationDamp = 2.0f;
 	private MinionUpgrade upgrade;
 	private Quaternion rotate;
@@ -107,7 +106,7 @@ public class EnemiAI : MonoBehaviour {
 	}
 	void FireProjectile ()
 	{
-		CurrentTarget.GetComponent<Turret_MG_ORIGINAL>().AddjustCurrentHealth(upgrade.getDamageUpdate(dmgLvl) * Time.deltaTime);		
+		CurrentTarget.GetComponent<Turret_MG_ORIGINAL>().AddjustCurrentHealth(upgrade.getDamageUpdate(upgrade.DamageLvl) * Time.deltaTime);		
 		
 	}
 

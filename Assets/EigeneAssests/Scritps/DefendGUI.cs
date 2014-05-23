@@ -10,8 +10,11 @@ public class DefendGUI : MonoBehaviour {
 	public GameObject MGIcon;
 	public GameObject menuButton;
 	public GameObject settingsButton;
-
-
+	public GameObject discripMenu;
+	public TextMesh damage;
+	public TextMesh health;
+	public TextMesh range;
+	public TextMesh discription;
 	public TextMesh live;
 	public TextMesh wave;
 	public TextMesh money;
@@ -21,15 +24,25 @@ public class DefendGUI : MonoBehaviour {
 	public Texture2D[] textures;
 
 	private int layerMask = ~((1<<9)|(1<<8));
-
-	
+	private MGUpgrades upgrades;
+	private bool discrptionopen;
 	private CameraMovement camMov;
-	
+	private string dmgTxt;
+	private string healthTxt;
+	private string rangeTxt;
 	private float startTime = 0.0f;
 	private float duration = 58.0f;
 	
 	private bool toggle= false;
 
+	public Vector3 DiscripMenuTran {
+		get{
+			return discripMenu.transform.position;
+		}
+		set{
+			discripMenu.transform.position = value;
+		}
+	}
 	public Vector3 SpielMenuTran {
 		get{
 			return spielMenu.transform.position;
@@ -38,9 +51,12 @@ public class DefendGUI : MonoBehaviour {
 			spielMenu.transform.position = value;
 		}
 	}
+	void Awake(){
+		discrptionopen = false;
+	}
 	void Start(){
 		camMov = maincam.GetComponent<CameraMovement>();
-
+		upgrades = GetComponent<MGUpgrades>();
 	}
 	
 	void Update(){
@@ -53,6 +69,14 @@ public class DefendGUI : MonoBehaviour {
 			menuButton.renderer.material.mainTexture = textures[0];
 			SpielMenuTran = new Vector3(Mathf.Lerp(SpielMenuTran.x,11,(Time.time - startTime) / duration),SpielMenuTran.y,SpielMenuTran.z);
 		}
+		if(discrptionopen){
+			DiscripMenuTran = new Vector3(DiscripMenuTran.x,Mathf.Lerp(DiscripMenuTran.y,-1,(Time.time - startTime) / duration),DiscripMenuTran.z);
+			damage.text = dmgTxt;
+			health.text = healthTxt;
+			range.text = rangeTxt;
+		}else{
+			DiscripMenuTran = new Vector3(DiscripMenuTran.x,Mathf.Lerp(DiscripMenuTran.y,-3.8f,(Time.time - startTime) / duration),DiscripMenuTran.z);
+		}
 		//Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began   Input.GetMouseButtonDown(0)
 		if (Input.GetMouseButtonDown(0)) {
 			Ray ray = GUIcam.camera.ScreenPointToRay (Input.mousePosition);
@@ -61,6 +85,8 @@ public class DefendGUI : MonoBehaviour {
 				if(hit.collider.name.Equals("Spielmenubtn")){
 					if(Input.GetMouseButtonDown(0)){
 						Turret_Placement.instance.buildPanalOpen = !Turret_Placement.instance.buildPanalOpen;
+						discrptionopen = false;
+						toggle = false;
 						MGIcon.renderer.material.mainTexture = textures[2];
 						Turret_Placement.instance.strucureIndex = 0;
 					}
@@ -71,10 +97,16 @@ public class DefendGUI : MonoBehaviour {
 						if(toggle){
 							MGIcon.renderer.material.mainTexture = textures[3];
 							Turret_Placement.instance.strucureIndex = 1;
+							discrptionopen = true;
 						}else{
+							discrptionopen = false;
 							MGIcon.renderer.material.mainTexture = textures[2];
 							Turret_Placement.instance.strucureIndex = 0;
 						}
+						dmgTxt = upgrades.getDamageUpdate(0).ToString();
+						healthTxt = upgrades.getHealthUpdate(0).ToString();
+						rangeTxt = upgrades.getRangeUpdate(0).ToString();
+						discription.text ="MG-Nest \n Effektiv gegen \nungepanzerte Ziele.";
 					}	
 				}
 			}		

@@ -3,12 +3,16 @@ using System.Collections;
 
 public class MinionUpgrade : Units {
 	public static MinionUpgrade instance;
+	private int dmgLvl;
+	private int healthLvl;
+	private int speedLvl;
 	private int dmg;
 	private int health;
 	private int speed;
 	private int dmgCost;
 	private int healthCost;
 	private int speedCost;
+	private PhotonView view;
 	public string _discribtion;
 	public int[] dmgArray;
 	public int[] healthArray;
@@ -18,6 +22,7 @@ public class MinionUpgrade : Units {
 	public int[] speedCostArray;
 
 	void Start(){
+		view = PhotonView.Get(this);
 		instance = this;
 		dmg = dmgArray[0];
 		health = healthArray[0];
@@ -25,8 +30,59 @@ public class MinionUpgrade : Units {
 		dmgCost = dmgCostArray[0];
 		healthCost = healthCostArray[0];
 		speedCost = speedCostArray[0];
+		dmgLvl = 0;
+		healthLvl = 0;
+		speedLvl = 0;
 	}
-	
+
+	public int DamageLvl {
+		get{
+			return dmgLvl;
+		}
+		set{
+			if(PlayerPrefs.GetString("online").Equals("Online"))
+				view.RPC("UpgradeDMG",PhotonTargets.All,value);
+			else
+				dmgLvl = value;
+		}
+	}
+	public int HealthLvl {
+		get{
+			return healthLvl;
+		}
+		set{
+			if(PlayerPrefs.GetString("online").Equals("Online"))
+				view.RPC("UpgradeHealth",PhotonTargets.All,value);
+			else{
+				healthLvl = value;
+			}
+		}
+	}
+	public int SpeedLvl {
+		get{
+			return speedLvl;
+		}
+		set{
+			if(PlayerPrefs.GetString("online").Equals("Online"))
+				view.RPC("UpgradeSpeed",PhotonTargets.All,value);
+			else
+				speedLvl = value;
+		}
+	}
+
+	[RPC]
+	void UpgradeDMG(int value){
+		dmgLvl = value;
+	}
+	[RPC]
+	void UpgradeHealth(int value){
+		healthLvl = value;
+	}
+	[RPC]
+	void UpgradeSpeed(int value){
+		speedLvl = value;
+	}
+
 	#region implemented abstract members of Turret
 	public override int getDamageUpdate (int level)
 	{

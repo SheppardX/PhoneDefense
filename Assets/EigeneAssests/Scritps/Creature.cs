@@ -6,7 +6,6 @@ using System.Collections;
 [RequireComponent (typeof(PhotonView))]
 public class Creature : MonoBehaviour {
 
-	public float walkSpeed = 100.0f;
 	public float rotateSpeed = 180.0f;
 	public float friction = 0.1f;
 	public float minLookDistance = 0.1f;
@@ -18,8 +17,6 @@ public class Creature : MonoBehaviour {
 	public Animation animatedCharakter;
 	public static int floorLayerMask;	
 	public bool live = true;	
-	public int healthLvl;	
-	public int speedLvl;	
 	public Texture2D progressBarEmpty;
 	public Texture2D progressBarFull;
 	private MinionUpgrade upgrade;
@@ -31,19 +28,19 @@ public class Creature : MonoBehaviour {
 	private Quaternion lookAtRotation;
 	private Vector3 velocity;
 	private Vector2 targetPos;
+	private PhotonView view;
 	[HideInInspector] public Vector3 targetPosition;
 
 	
 	void Awake () {
-		healthLvl = 0;
-		speedLvl = 0;
 		floorLayerMask = 1 << LayerMask.NameToLayer("Floor");
 		targetPosition = transform.position +transform.forward;
 		live = true;
+		view = PhotonView.Get(this);
 		upgrade = MinionUpgrade.instance;
-		curHealth = (float)upgrade.getHealthUpdate(healthLvl);
-		maxHealth = upgrade.getHealthUpdate(healthLvl);
-		healthBarLength = curHealth /(float)upgrade.getHealthUpdate(healthLvl);
+		curHealth = (float)upgrade.getHealthUpdate(upgrade.HealthLvl);
+		maxHealth = upgrade.getHealthUpdate(upgrade.HealthLvl);
+		healthBarLength = curHealth /(float)upgrade.getHealthUpdate(upgrade.HealthLvl);
 	}
 	
 	void Update () {
@@ -66,7 +63,7 @@ public class Creature : MonoBehaviour {
 		}else{
 			forwardFaktor = 0.0f;	
 		}
-		rigidbody.velocity += transform.forward * forwardFaktor * walkSpeed;
+		rigidbody.velocity += transform.forward * forwardFaktor * upgrade.getSpeedUpdate(upgrade.SpeedLvl);
 		
 		velocity = rigidbody.velocity;
 		velocity.x *= friction;
@@ -74,9 +71,11 @@ public class Creature : MonoBehaviour {
 		rigidbody.velocity = velocity;
 	}
 
+
 	public void AddjustCurrentHealth (float adj)
 	{
 		curHealth -= adj;	
+		maxHealth = upgrade.getHealthUpdate(upgrade.HealthLvl);
 		if (curHealth < 0)		
 			curHealth = 0;	
 		if (curHealth > maxHealth)		
@@ -84,7 +83,20 @@ public class Creature : MonoBehaviour {
 		if(maxHealth < 1)		
 			maxHealth = 1;		
 		healthBarLength = curHealth /(float)maxHealth;
-
+		//view.RPC("NetworkHealth",PhotonTargets.All,adj);
+	}
+	
+	[RPC]
+	void NetworkHealth(float adj){
+		curHealth -= adj;	
+		maxHealth = upgrade.getHealthUpdate(upgrade.HealthLvl);
+		if (curHealth < 0)		
+			curHealth = 0;	
+		if (curHealth > maxHealth)		
+			curHealth = maxHealth;		
+		if(maxHealth < 1)		
+			maxHealth = 1;		
+		healthBarLength = curHealth /(float)maxHealth;
 	}
 
 	void OnDrawGizmos(){

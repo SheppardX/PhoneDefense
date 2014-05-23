@@ -15,7 +15,7 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 	public int rangeLvl;	
 	public float curHealth;
 	public int maxHealth;
-	public GameObject placePlane;
+	private PlacementPlane placePlane;
 	public float healthBarLength;
 	public Texture2D progressBarEmpty;
 	public Texture2D progressBarFull;
@@ -32,8 +32,16 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 	private Vector2 targetPos;
 	private GameObject _currentTarget = null;
 	private PhotonView view;
+	private int layerMask = ~(1<<9);
 
-
+	public PlacementPlane PlacePlane {
+		get{
+			return placePlane;
+		}
+		set{
+			placePlane = value;
+		}
+	}
 	public Vector3 TurretMG {
 		get{
 			return turretMG.position;
@@ -131,12 +139,13 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 		healthBarLength = curHealth /(float)maxHealth;
 	}
 	void Start(){
+
 	}
 
 	void Update ()
 	{
 		if (placed) {			
-			ObjPosition = new Vector3 (ObjPosition.x, Mathf.Lerp (ObjPosition.y, yOld.y, (Time.time - startTime) / duration), ObjPosition.z);
+			ObjPosition = new Vector3 (ObjPosition.x, Mathf.Lerp (ObjPosition.y, yOld.y+0.3f, (Time.time - startTime) / duration), ObjPosition.z);
 		}
 
 
@@ -153,9 +162,15 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 
 		if(curHealth <= 0){		
 			PlayerStats.instance.money +=15;
-			placePlane.tag = "PlacementPlane_Open";
 			DestroyObject(gameObject);
 		}	
+
+	}
+
+	void OnDestroy(){
+		RaycastHit hit = new RaycastHit();
+		if (Physics.Raycast (transform.position, -transform.up,out hit,100,layerMask))
+			hit.collider.GetComponent<PlacementPlane>().PlacePlane = false;
 	}
 
 
@@ -194,7 +209,7 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 		GUI.EndGroup();
 		GUI.EndGroup();
 	}
-
+	
 	public void AddjustCurrentHealth (float adj)
 	{
 		curHealth -= adj;	
@@ -206,7 +221,20 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 		if(maxHealth < 1)		
 			maxHealth = 1;		
 		healthBarLength = curHealth /(float)maxHealth;
-		
+		//view.RPC("NetworkHealth",PhotonTargets.All,adj);
+	}
+
+	[RPC]
+	void NetworkHealth(float adj){
+		curHealth -= adj;	
+		maxHealth = upgrade.getHealthUpdate(healthLvl);
+		if (curHealth < 0)		
+			curHealth = 0;	
+		if (curHealth > maxHealth)		
+			curHealth = maxHealth;		
+		if(maxHealth < 1)		
+			maxHealth = 1;		
+		healthBarLength = curHealth /(float)maxHealth;
 	}
 }
 

@@ -142,7 +142,6 @@ public class DefUpgradeMenu : MonoBehaviour {
 				case "DMG+":
 					if(Input.GetTouch (0).phase == TouchPhase.Began){
 						if(lastHitComponent.DamageLvl <= 4 && PlayerStats.instance.money > dmgCostTxt){	
-							dmgPlusBtn.GetComponent<MeshRenderer>().enabled = true;
 							PlayerStats.instance.money -= dmgCostTxt;
 							lastHitComponent.DamageLvl +=1;
 							upgradeRefresh();
@@ -202,11 +201,5 @@ public class DefUpgradeMenu : MonoBehaviour {
 		rangeCostTxt = upgrades.getRangeCost(lastHitComponent.RangeLvl+1);
 	}
 
-	[RPC]
-	void Client_SetTurretSettings(int dmg,int range,int health){
-		lastHitComponent.DamageLvl = dmg;
-		lastHitComponent.RangeLvl = range;
-		lastHitComponent.HealthLvl = health;
-	}
 
 }
