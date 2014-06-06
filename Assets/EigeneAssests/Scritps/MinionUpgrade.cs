@@ -3,9 +3,9 @@ using System.Collections;
 
 public class MinionUpgrade : Units {
 	public static MinionUpgrade instance;
-	private int dmgLvl;
-	private int healthLvl;
-	private int speedLvl;
+	public int dmgLvl;
+	public int healthLvl;
+	public int speedLvl;
 	private int dmg;
 	private int health;
 	private int speed;

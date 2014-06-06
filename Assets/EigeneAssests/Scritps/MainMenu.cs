@@ -80,8 +80,10 @@ public class MainMenu : MonoBehaviour {
 			channelName = GUI.TextField(new Rect(105,0,200,50),channelName);
 			channelPassword = GUI.PasswordField(new Rect(105,55,200,50),channelPassword,'*');
 			if(GUI.Button(new Rect(0,110,300,50),"Verteidige")){
-				if(channelName.Length >= 3)
+				if(channelName.Length >= 3){
 					MultiplayerManager.instance.StartServer(channelName,channelPassword);
+					PlayerPrefs.SetString("side","Defense");
+				}
 
 			}
 			//if(GUI.Button(new Rect(0,165,300,50),"Greif an")) {
@@ -102,7 +104,8 @@ public class MainMenu : MonoBehaviour {
 				GUILayout.Label(game.name +" "+game.playerCount+"/"+game.maxPlayers);
 				if(GUI.Button(new Rect(170,25+(40*_a),200,30),"Connect")){
 					PhotonNetwork.JoinRoom(game.name);
-					_a++;
+					PlayerPrefs.SetString("side","Attack");
+					++_a;
 				}
 				GUILayout.EndHorizontal();
 			}

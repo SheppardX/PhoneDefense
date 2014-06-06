@@ -15,10 +15,13 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 	public int rangeLvl;	
 	public float curHealth;
 	public int maxHealth;
-	private PlacementPlane placePlane;
 	public float healthBarLength;
 	public Texture2D progressBarEmpty;
 	public Texture2D progressBarFull;
+	private PlacementPlane placePlane;
+	private bool readyToShoot = true;
+	private float nextFireTime = 1f;
+	public float coolDown;
 	private Vector2 size = new Vector2(60,20);
 	private EnemyGlobalList enemyList;
 	private MGUpgrades upgrade;
@@ -96,9 +99,9 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 		}
 	}
 
-	public Transform CurrentTargetTransform {
+	public Vector3 CurrentTargetPosition {
 			get {
-					return CurrentTarget.transform;
+					return CurrentTarget.transform.position;
 			}
 	}
 
@@ -152,10 +155,14 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 		if (CurrentTarget == null) {
 				rotate = Quaternion.identity;	
 		} else {
-			if(distanceToEnemy > upgrade.getRangeUpdate(rangeLvl))
-				searchForNewTarget();
-			rotate = Quaternion.LookRotation (CurrentTargetTransform.position - TurretMG);	
-			FireProjectile ();
+			rotate = Quaternion.LookRotation (CurrentTargetPosition - TurretMG);	
+			coolDown+=Time.deltaTime;
+			if(readyToShoot && distanceToEnemy < upgrade.getRangeUpdate(rangeLvl))
+				FireProjectile ();
+			if(coolDown >= nextFireTime){
+				readyToShoot = true;
+				coolDown = 0;
+			}
 		}
 		Debug.DrawRay (TurretMG, forward * upgrade.getRangeUpdate(rangeLvl), Color.red);
 		turretMG.rotation = Quaternion.Lerp (turretMG.rotation, rotate, Time.deltaTime * rotationDamp);
@@ -174,16 +181,9 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 	}
 
 
-	void FireProjectile ()
-	{
-		CurrentTarget.GetComponent<Creature>().AddjustCurrentHealth(upgrade.getDamageUpdate(dmgLvl) * Time.deltaTime);
-
-	
-	}
-
-	IEnumerator wait ()
-	{
-			yield return new WaitForSeconds (1);
+	void FireProjectile (){
+		readyToShoot = false;
+		CurrentTarget.GetComponent<Creature>().AddjustCurrentHealth(upgrade.getDamageUpdate(dmgLvl));
 	}
 
 	[RPC]

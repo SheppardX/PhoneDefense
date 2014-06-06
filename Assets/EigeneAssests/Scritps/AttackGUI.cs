@@ -10,7 +10,6 @@ public class AttackGUI : MonoBehaviour {
 	public GameObject spielMenu;	
 	public GameObject UNITIcon;
 	public GameObject menuButton;
-	public GameObject settingsButton;
 	public GameObject left;
 	public GameObject right;
 	public GameObject attackBtn;
@@ -32,6 +31,8 @@ public class AttackGUI : MonoBehaviour {
 	public GameObject htlPlusBtn;
 	public GameObject spdPlusBtn;
 
+	private PlayerStats player;
+	private UnitSpawn spawn;
 	private int layerMask = ~((1<<9)|(1<<8));
 	private AttackList list;
 	private bool menu;
@@ -73,10 +74,10 @@ public class AttackGUI : MonoBehaviour {
 			right.transform.position = value;
 		}
 	}
-	void Awake(){
-		upgrade = MinionUpgrade.instance;
-	}
 	void Start(){
+		upgrade = MinionUpgrade.instance;
+		spawn = UnitSpawn.instance;
+		player = PlayerStats.instance;
 		instance = this;
 		list = AttackList.instance;
 		camMov = maincam.GetComponent<CameraMovement>();
@@ -86,7 +87,14 @@ public class AttackGUI : MonoBehaviour {
 	
 	void Update(){
 		if(menu){
-			SpielMenuTran = new Vector3(Mathf.Lerp(SpielMenuTran.x,0.05f,(Time.time - startTime) / duration),SpielMenuTran.y,SpielMenuTran.z);
+			SpielMenuTran = new Vector3(Mathf.Lerp(SpielMenuTran.x,0.05f,(Time.time - startTime) / duration),SpielMenuTran.y,SpielMenuTran.z);	
+			upgradeRefresh();
+			damage.text = dmgTxt.ToString();
+			health.text = healthTxt.ToString();
+			speed.text = speedTxt.ToString();
+			damageCost.text = dmgCostTxt.ToString();
+			healthCost.text = healthCostTxt.ToString();
+			speedCost.text = speedCostTxt.ToString();
 		}else{
 			SpielMenuTran = new Vector3(Mathf.Lerp(SpielMenuTran.x,12.43f,(Time.time - startTime) / duration),SpielMenuTran.y,SpielMenuTran.z);
 		}
@@ -150,10 +158,11 @@ public class AttackGUI : MonoBehaviour {
 				case "attackBtn":
 					if(Input.GetMouseButtonDown(0)){
 						list.UnitsName = unitsName;
+						UnitSpawn.instance.startWave();
 					}
 				break;
 				case "DMG+":
-					if(Input.GetTouch (0).phase == TouchPhase.Began){
+					if(Input.GetMouseButtonDown(0)){
 						if(upgrade.DamageLvl <= 4 && PlayerStats.instance.money > dmgCostTxt){	
 							PlayerStats.instance.money -= dmgCostTxt;
 							upgrade.DamageLvl +=1;
@@ -162,7 +171,7 @@ public class AttackGUI : MonoBehaviour {
 					}
 					break;
 				case "HTL+":
-					if(Input.GetTouch (0).phase == TouchPhase.Began){
+					if(Input.GetMouseButtonDown(0)){
 						if(upgrade.HealthLvl <= 4 && PlayerStats.instance.money > healthCostTxt){		
 							PlayerStats.instance.money -= healthCostTxt;
 							upgrade.HealthLvl +=1;
@@ -171,7 +180,7 @@ public class AttackGUI : MonoBehaviour {
 					}
 					break;
 				case "SPEED+":
-					if(Input.GetTouch (0).phase == TouchPhase.Began){
+					if(Input.GetMouseButtonDown(0)){
 						if(upgrade.SpeedLvl <= 4 && PlayerStats.instance.money > speedCostTxt){
 							PlayerStats.instance.money -= speedCostTxt;
 							upgrade.SpeedLvl +=1;
@@ -192,8 +201,7 @@ public class AttackGUI : MonoBehaviour {
 			Right = new Vector3(Right.x,Right.y,2);
 			Left = new Vector3(Left.x,Left.y,2);
 		}
-		if(Spawn.GetComponent<UnitSpawn>().enabled)
-			wave.text = UnitSpawn.instance.curWave.ToString ();
+		wave.text = UnitSpawn.instance.curWave.ToString ();
 		live.text = PlayerStats.instance.livePoints.ToString ();
 		money.text = PlayerStats.instance.money.ToString ();
 	}

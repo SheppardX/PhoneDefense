@@ -9,7 +9,6 @@ public class DefendGUI : MonoBehaviour {
 	public GameObject spielMenu;	
 	public GameObject MGIcon;
 	public GameObject menuButton;
-	public GameObject settingsButton;
 	public GameObject discripMenu;
 	public TextMesh damage;
 	public TextMesh health;

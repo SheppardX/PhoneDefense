@@ -20,12 +20,12 @@ public class UnitSpawn : MonoBehaviour
 	//The amount of time between each spawn
 	public float spawnDelay = 0.5f;
 	public int waveDelay = 30;
-	public int waveCounter = 0;
+	private int waveCounter = 0;
 
 	//Are you using a terrain? Script uses this to calculate how high above the enemy needs to be placed on spawn
 	public bool useTerrain = true;
-	
-
+	private bool timerStarted = false;
+	public TextMesh startDelay;
 	//How tall is your enemy character
 	private float enemyHeight;
 
@@ -34,7 +34,7 @@ public class UnitSpawn : MonoBehaviour
 
 	//What is the current wave
 	public int curWave = 1;
-
+	private PhotonView view;
 	//Is the spawn system currently spawning enemies
 	private bool isSpawning = false;
 	private bool isLastDead = false;
@@ -49,15 +49,10 @@ public class UnitSpawn : MonoBehaviour
 
 	void Start ()
 	{
+		view = PhotonView.Get(this);
+
 		Units = AttackList.instance.UnitsName;
 		instance = this;
-		//Find what the height of the enemy's CharacterContoller component is
-		// enemyHeight = enemyPrefab.GetComponent<BoxCollider>().height;
-		//Begin the first wave
-		if(!PhotonNetwork.isMasterClient){
-			enemyHeight=0;
-			StartCoroutine (SpawnEnemy ());
-		}
 	}
 
 	void Update ()
@@ -72,9 +67,10 @@ public class UnitSpawn : MonoBehaviour
 
 				//When there are no more enemies left, increase the current wave
 				isLastDead=false;
-				if (curEnemies.Length <= 0) {
+				if (curEnemies.Length <= 0 && !timerStarted) {
 					isLastDead=true;
-					IncreaseWave ();
+					StartCoroutine (Timer ());
+					timerStarted = true;
 				}
 
 			}
@@ -119,21 +115,43 @@ public class UnitSpawn : MonoBehaviour
 			}
 		}
 		if(isLastDead){	
-			for(int i = 0 ; i < waveDelay ; i++){			
-				yield return new WaitForSeconds(1);
-				waveCounter+=1;
-			}
-			if(waveCounter>=waveDelay){
-				waveCounter=0;
-				isLastDead=false;
-			}	
-			//Tell script that we are finished spawning enemies for this round		
-			isSpawning = false;		
+			StopCoroutine("SpawnEnemy");
+			isSpawning = false;	
+			timerStarted = false;
 		}
 	}
-	
-	IEnumerator Wait(){
-		yield return new WaitForSeconds(30);
+
+	IEnumerator Timer(){
+		if(isLastDead){	
+			waveCounter = waveDelay;
+			for(int i = waveDelay+1 ; i > 0 ; --i){			
+				yield return new WaitForSeconds(1);
+				waveCounter-=1;
+				if(PlayerPrefs.GetString("side").Equals("Defense")||PlayerPrefs.GetString("online").Equals("Offline")){
+					startDelay.text ="Angriff kommt in "+waveCounter;
+					if(PlayerPrefs.GetString("online").Equals("Online"))
+					   view.RPC("AttackTimer",PhotonTargets.All,waveCounter,startDelay.text);
+				}
+				else if(PlayerPrefs.GetString("side").Equals("Attack"))
+					startDelay.text ="Zug fährt ab in "+waveCounter+" Sek";
+			}			
+			if(waveCounter<=0){
+				waveCounter=0;
+				startDelay.text ="";				
+				if(PlayerPrefs.GetString("online").Equals("Online"))
+					view.RPC("AttackTimer",PhotonTargets.All,waveCounter,startDelay.text);
+				isLastDead=false;
+				StartCoroutine(SpawnEnemy());
+				StopCoroutine("Timer");
+			}
+		}
+	}
+	public void startWave (){
+		if(isLastDead){
+			waveCounter=0;
+			isLastDead = false;
+			isSpawning = false;	
+		}
 	}
 
 	Vector3 FindSpawnPoint (float spawnRadius, int angleInDegrees)
@@ -162,22 +180,11 @@ public class UnitSpawn : MonoBehaviour
 
 	}
 
-	void IncreaseWave ()
-	{
-
-		//Increase the current wave by 1
-		isLastDead=false;
-		curWave++;
-
-		//Increase the maximum number of enemies for this wave
-		maxEnemies = 5;
-
-		//Start the next wave
-		if(!PhotonNetwork.isMasterClient)
-			StartCoroutine (SpawnEnemy ());
-
+	[RPC]
+	void AttackTimer(int timer, string startdelay){
+		waveCounter = timer;
+		startDelay.text = startdelay;
 	}
-
 
 	void OnGUI ()
 	{

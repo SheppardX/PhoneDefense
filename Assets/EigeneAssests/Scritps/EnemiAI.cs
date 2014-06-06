@@ -6,12 +6,16 @@ public class EnemiAI : MonoBehaviour {
 	public Vector3[] targetPoints;
 	public int targetIndex = 0;
 	public float range = 30f;
+	public float damage;
 	public float minPlayerDistance = 8.0f;
 	public float maxPlayerDistance = 12.0f;
 	public Transform weapon;
 	public GameObject[] enemyObjList;
 	public float distanceToEnemy;
 	public float rotationDamp = 2.0f;
+	private bool readyToShoot = true;
+	private float nextFireTime = 2f;
+	public float coolDown;
 	private MinionUpgrade upgrade;
 	private Quaternion rotate;
 	private Vector3 forward;
@@ -22,11 +26,14 @@ public class EnemiAI : MonoBehaviour {
 	private Vector3 tpPlanar;
 	private Vector3 oldtarget;
 
-	void Start(){
+	void Awake(){
 		myCreature = GetComponent<Creature>();	
 		upgrade = MinionUpgrade.instance;
 		enemyList = EnemyGlobalList.instance;
 	}	
+	void Start(){
+		damage = upgrade.getDamageUpdate(upgrade.DamageLvl);
+	}
 	
 	void Update () {
 		UpdateWalkPath(); 
@@ -37,10 +44,16 @@ public class EnemiAI : MonoBehaviour {
 		if (CurrentTarget == null) {
 			rotate = Quaternion.identity;	
 		} else {
-			if(distanceToEnemy > range)
-				searchForNewTarget();
-			rotate = Quaternion.LookRotation (CurrentTargetTransform.position - weapon.position);	
-			FireProjectile ();
+			rotate = Quaternion.LookRotation (CurrentTargetPosition - weapon.position);	
+			coolDown+=Time.deltaTime;
+			if(readyToShoot)
+
+				FireProjectile ();
+			if(coolDown >= nextFireTime  && distanceToEnemy < range){
+				distanceToEnemy = Vector3.Distance (CurrentTargetPosition, weapon.position);	
+				readyToShoot = true;
+				coolDown = 0;
+			}
 		}
 		Debug.DrawRay (weapon.position, forward * range, Color.red);
 		weapon.rotation = Quaternion.Lerp (weapon.rotation, rotate, Time.deltaTime * rotationDamp);
@@ -56,9 +69,9 @@ public class EnemiAI : MonoBehaviour {
 		}
 	}
 
-	public Transform CurrentTargetTransform {
+	public Vector3 CurrentTargetPosition {
 		get {
-			return CurrentTarget.transform;
+			return CurrentTarget.transform.position;
 		}
 	}
 
@@ -106,8 +119,8 @@ public class EnemiAI : MonoBehaviour {
 	}
 	void FireProjectile ()
 	{
-		CurrentTarget.GetComponent<Turret_MG_ORIGINAL>().AddjustCurrentHealth(upgrade.getDamageUpdate(upgrade.DamageLvl) * Time.deltaTime);		
-		
+		readyToShoot = false;
+		CurrentTarget.GetComponent<Turret_MG_ORIGINAL>().AddjustCurrentHealth(damage);				
 	}
 
 }
