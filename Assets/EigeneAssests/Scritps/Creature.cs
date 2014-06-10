@@ -74,30 +74,37 @@ public class Creature : MonoBehaviour {
 
 	public void AddjustCurrentHealth (float adj)
 	{
-		curHealth -= adj;	
-		maxHealth = upgrade.getHealthUpdate(upgrade.HealthLvl);
-		if (curHealth < 0)		
-			curHealth = 0;	
-		if (curHealth > maxHealth)		
-			curHealth = maxHealth;		
-		if(maxHealth < 1)		
-			maxHealth = 1;		
-		healthBarLength = curHealth /(float)maxHealth;
-		//view.RPC("NetworkHealth",PhotonTargets.All,adj);
-	}
-	
-	[RPC]
-	void NetworkHealth(float adj){
-		curHealth -= adj;	
-		maxHealth = upgrade.getHealthUpdate(upgrade.HealthLvl);
-		if (curHealth < 0)		
-			curHealth = 0;	
-		if (curHealth > maxHealth)		
-			curHealth = maxHealth;		
-		if(maxHealth < 1)		
-			maxHealth = 1;		
-		healthBarLength = curHealth /(float)maxHealth;
-	}
+		if(!PhotonNetwork.isMasterClient){
+			curHealth -= adj;	
+			maxHealth = upgrade.getHealthUpdate(upgrade.HealthLvl);
+			if (curHealth < 0)		
+				curHealth = 0;	
+			if (curHealth > maxHealth)		
+				curHealth = maxHealth;		
+			if(maxHealth < 1)		
+				maxHealth = 1;		
+			healthBarLength = curHealth /(float)maxHealth;
+			view.RPC("NetworkHealth",PhotonTargets.All,curHealth,maxHealth,healthBarLength);
+		}else if(PlayerPrefs.GetString("online").Equals("Offline")){
+			curHealth -= adj;	
+			maxHealth = upgrade.getHealthUpdate(upgrade.HealthLvl);
+			if (curHealth < 0)		
+				curHealth = 0;	
+			if (curHealth > maxHealth)		
+				curHealth = maxHealth;		
+			if(maxHealth < 1)		
+				maxHealth = 1;		
+			healthBarLength = curHealth /(float)maxHealth;
+		}
+		
+		}
+		
+		[RPC]
+		void NetworkHealth(float cur,int max,float hBL){
+			curHealth = cur;
+			maxHealth = max;
+			healthBarLength = hBL;
+		}
 
 	void OnDrawGizmos(){
 		Gizmos.color = Color.red;

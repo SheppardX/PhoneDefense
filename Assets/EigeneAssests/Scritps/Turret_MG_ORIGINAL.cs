@@ -20,7 +20,7 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 	public Texture2D progressBarFull;
 	private PlacementPlane placePlane;
 	private bool readyToShoot = true;
-	private float nextFireTime = 1f;
+	private float nextFireTime = 0.5f;
 	public float coolDown;
 	private Vector2 size = new Vector2(60,20);
 	private EnemyGlobalList enemyList;
@@ -212,29 +212,36 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 	
 	public void AddjustCurrentHealth (float adj)
 	{
-		curHealth -= adj;	
-		maxHealth = upgrade.getHealthUpdate(healthLvl);
-		if (curHealth < 0)		
-			curHealth = 0;	
-		if (curHealth > maxHealth)		
-			curHealth = maxHealth;		
-		if(maxHealth < 1)		
-			maxHealth = 1;		
-		healthBarLength = curHealth /(float)maxHealth;
-		//view.RPC("NetworkHealth",PhotonTargets.All,adj);
+		if(PhotonNetwork.isMasterClient){
+			curHealth -= adj;	
+			maxHealth = upgrade.getHealthUpdate(healthLvl);
+			if (curHealth < 0)		
+				curHealth = 0;	
+			if (curHealth > maxHealth)		
+				curHealth = maxHealth;		
+			if(maxHealth < 1)		
+				maxHealth = 1;		
+			healthBarLength = curHealth /(float)maxHealth;
+			view.RPC("NetworkHealth",PhotonTargets.All,curHealth,maxHealth,healthBarLength);
+		}else if(PlayerPrefs.GetString("online").Equals("Offline")){
+			curHealth -= adj;	
+			maxHealth = upgrade.getHealthUpdate(healthLvl);
+			if (curHealth < 0)		
+				curHealth = 0;	
+			if (curHealth > maxHealth)		
+				curHealth = maxHealth;		
+			if(maxHealth < 1)		
+				maxHealth = 1;		
+			healthBarLength = curHealth /(float)maxHealth;
+		}
+
 	}
 
 	[RPC]
-	void NetworkHealth(float adj){
-		curHealth -= adj;	
-		maxHealth = upgrade.getHealthUpdate(healthLvl);
-		if (curHealth < 0)		
-			curHealth = 0;	
-		if (curHealth > maxHealth)		
-			curHealth = maxHealth;		
-		if(maxHealth < 1)		
-			maxHealth = 1;		
-		healthBarLength = curHealth /(float)maxHealth;
+	void NetworkHealth(float cur,int max,float hBL){
+		curHealth = cur;
+		maxHealth = max;
+		healthBarLength = hBL;
 	}
 }
 

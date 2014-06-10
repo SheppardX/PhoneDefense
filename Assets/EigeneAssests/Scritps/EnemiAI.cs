@@ -14,7 +14,7 @@ public class EnemiAI : MonoBehaviour {
 	public float distanceToEnemy;
 	public float rotationDamp = 2.0f;
 	private bool readyToShoot = true;
-	private float nextFireTime = 2f;
+	private float nextFireTime = 2.5f;
 	public float coolDown;
 	private MinionUpgrade upgrade;
 	private Quaternion rotate;
@@ -32,7 +32,7 @@ public class EnemiAI : MonoBehaviour {
 		enemyList = EnemyGlobalList.instance;
 	}	
 	void Start(){
-		damage = upgrade.getDamageUpdate(upgrade.DamageLvl);
+
 	}
 	
 	void Update () {
@@ -46,9 +46,10 @@ public class EnemiAI : MonoBehaviour {
 		} else {
 			rotate = Quaternion.LookRotation (CurrentTargetPosition - weapon.position);	
 			coolDown+=Time.deltaTime;
-			if(readyToShoot)
-
+			if(readyToShoot){
+				damage = upgrade.getDamageUpdate(upgrade.DamageLvl);
 				FireProjectile ();
+			}
 			if(coolDown >= nextFireTime  && distanceToEnemy < range){
 				distanceToEnemy = Vector3.Distance (CurrentTargetPosition, weapon.position);	
 				readyToShoot = true;
