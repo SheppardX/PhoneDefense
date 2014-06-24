@@ -74,7 +74,7 @@ public class Creature : MonoBehaviour {
 
 	public void AddjustCurrentHealth (float adj)
 	{
-		if(!PhotonNetwork.isMasterClient){
+		if(!PhotonNetwork.isMasterClient && PlayerPrefs.GetString("online").Equals("Online")){
 			curHealth -= adj;	
 			maxHealth = upgrade.getHealthUpdate(upgrade.HealthLvl);
 			if (curHealth < 0)		

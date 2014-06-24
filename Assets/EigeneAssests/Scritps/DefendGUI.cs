@@ -8,6 +8,7 @@ public class DefendGUI : MonoBehaviour {
 	public GameObject stats;
 	public GameObject spielMenu;	
 	public GameObject MGIcon;
+	public GameObject PatIcon;
 	public GameObject menuButton;
 	public GameObject discripMenu;
 	public TextMesh damage;
@@ -76,22 +77,23 @@ public class DefendGUI : MonoBehaviour {
 		}else{
 			DiscripMenuTran = new Vector3(DiscripMenuTran.x,Mathf.Lerp(DiscripMenuTran.y,-3.8f,(Time.time - startTime) / duration),DiscripMenuTran.z);
 		}
-		//Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began   Input.GetMouseButtonDown(0)
-		if (Input.GetMouseButtonDown(0)) {
+		//Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began   Input.GetMouseButtonUp(0)
+		if (Input.GetMouseButtonUp(0)) {
 			Ray ray = GUIcam.camera.ScreenPointToRay (Input.mousePosition);
 			RaycastHit hit;
 			if(Physics.Raycast(ray, out hit, 1000, layerMask)){
-				if(hit.collider.name.Equals("Spielmenubtn")){
-					if(Input.GetMouseButtonDown(0)){
+				switch (hit.collider.name) {
+				case "Spielmenubtn":
+					if(Input.GetMouseButtonUp(0)){
 						Turret_Placement.instance.buildPanalOpen = !Turret_Placement.instance.buildPanalOpen;
 						discrptionopen = false;
 						toggle = false;
 						MGIcon.renderer.material.mainTexture = textures[2];
 						Turret_Placement.instance.strucureIndex = 0;
 					}
-				}
-				if(hit.collider.name.Equals("MGIcon")){
-					if(Input.GetMouseButtonDown(0)){
+					break;
+				case "MGIcon":
+					if(Input.GetMouseButtonUp(0)){
 						toggle = !toggle;
 						if(toggle){
 							MGIcon.renderer.material.mainTexture = textures[3];
@@ -105,8 +107,27 @@ public class DefendGUI : MonoBehaviour {
 						dmgTxt = upgrades.getDamageUpdate(0).ToString();
 						healthTxt = upgrades.getHealthUpdate(0).ToString();
 						rangeTxt = upgrades.getRangeUpdate(0).ToString();
-						discription.text ="MG-Nest \n Effektiv gegen \nungepanzerte Ziele.";
+						discription.text ="MG-Nest \nEffektiv gegen \nungepanzerte Ziele.";
 					}	
+					break;
+				case "PatIcon":
+					if(Input.GetMouseButtonUp(0)){
+						toggle = !toggle;
+						if(toggle){
+							PatIcon.renderer.material.mainTexture = textures[5];
+							Turret_Placement.instance.strucureIndex = 2;
+							discrptionopen = true;
+						}else{
+							discrptionopen = false;
+							PatIcon.renderer.material.mainTexture = textures[4];
+							Turret_Placement.instance.strucureIndex = 0;
+						}
+						dmgTxt = upgrades.getDamageUpdate(0).ToString();
+						healthTxt = upgrades.getHealthUpdate(0).ToString();
+						rangeTxt = upgrades.getRangeUpdate(0).ToString();
+						discription.text ="Patriot Racketensystem \nEffektiv gegen \nFlug und gepanzerte Ziele.";
+					}
+					break;
 				}
 			}		
 		}

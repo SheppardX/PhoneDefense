@@ -1,0 +1,104 @@
+-debug
+-target:library
+-nowarn:0169
+-out:Temp/Assembly-CSharp.dll
+-r:"C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll"
+-r:Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll
+-r:Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll
+-r:Assets/Plugins/Photon3Unity3D.dll
+-r:"C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll"
+-define:UNITY_ANDROID
+-define:ENABLE_MICROPHONE
+-define:ENABLE_TEXTUREID_MAP
+-define:ENABLE_AUDIO_FMOD
+-define:ENABLE_MONO
+-define:ENABLE_SPRITES
+-define:ENABLE_TERRAIN
+-define:ENABLE_GENERICS
+-define:ENABLE_SUBSTANCE
+-define:INCLUDE_WP8SUPPORT
+-define:ENABLE_WWW
+-define:ENABLE_IMAGEEFFECTS
+-define:ENABLE_WEBCAM
+-define:INCLUDE_METROSUPPORT
+-define:RENDER_SOFTWARE_CURSOR
+-define:ENABLE_NETWORK
+-define:ENABLE_PHYSICS
+-define:ENABLE_CACHING
+-define:ENABLE_CLOTH
+-define:UNITY_ANDROID_API
+-define:ENABLE_2D_PHYSICS
+-define:ENABLE_SHADOWS
+-define:ENABLE_AUDIO
+-define:ENABLE_NAVMESH_CARVING
+-define:ENABLE_SINGLE_INSTANCE_BUILD_SETTING
+-define:UNITY_4_3_3
+-define:UNITY_4_3
+-define:ENABLE_PROFILER
+-define:UNITY_EDITOR
+-define:UNITY_EDITOR_WIN
+-define:UNITY_TEAM_LICENSE
+Assets/EigeneAssests/Scritps/AttackGUI.cs
+Assets/EigeneAssests/Scritps/AttackList.cs
+Assets/EigeneAssests/Scritps/CameraMovement.cs
+Assets/EigeneAssests/Scritps/Creature.cs
+Assets/EigeneAssests/Scritps/DefUpgradeMenu.cs
+Assets/EigeneAssests/Scritps/DefendGUI.cs
+Assets/EigeneAssests/Scritps/DiscriptionMenu.cs
+Assets/EigeneAssests/Scritps/EnemiAI.cs
+Assets/EigeneAssests/Scritps/EnemyGlobalList.cs
+Assets/EigeneAssests/Scritps/FPSDisplayScript.cs
+Assets/EigeneAssests/Scritps/GUISizer.cs
+Assets/EigeneAssests/Scritps/LevelSelection.cs
+Assets/EigeneAssests/Scritps/MGUpgrades.cs
+Assets/EigeneAssests/Scritps/MainMenu.cs
+Assets/EigeneAssests/Scritps/MinionUpgrade.cs
+Assets/EigeneAssests/Scritps/MultiplayerManager.cs
+Assets/EigeneAssests/Scritps/OptionsMenu.cs
+Assets/EigeneAssests/Scritps/PatriotUpgrades.cs
+Assets/EigeneAssests/Scritps/PlacementPlane.cs
+Assets/EigeneAssests/Scritps/PlayerStats.cs
+Assets/EigeneAssests/Scritps/ScaleScript.cs
+Assets/EigeneAssests/Scritps/TurretUpgrades.cs
+Assets/EigeneAssests/Scritps/Turret_MG_ORIGINAL.cs
+Assets/EigeneAssests/Scritps/Turret_Patroit.cs
+Assets/EigeneAssests/Scritps/Turret_Placement.cs
+Assets/EigeneAssests/Scritps/UnitSpawn.cs
+Assets/EigeneAssests/Scritps/Units.cs
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/CustomTypes.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/Enums.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/Extensions.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/FriendInfo.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/LoadbalancingPeer.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/NetworkingPeer.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/PhotonClasses.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/PhotonHandler.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/PhotonLagSimulationGui.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/PhotonNetwork.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/PhotonPlayer.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/PhotonStatsGui.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/PhotonView.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/PingCloudRegions.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/RPC.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/Room.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/RoomInfo.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/RpcIndexComponent.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/ServerSettings.cs"
+"Assets/Photon Unity Networking/Plugins/PhotonNetwork/SocketUdp.cs"
+"Assets/Photon Unity Networking/UtilityScripts/ConnectAndJoinRandom.cs"
+"Assets/Photon Unity Networking/UtilityScripts/InRoomChat.cs"
+"Assets/Photon Unity Networking/UtilityScripts/InputToEvent.cs"
+"Assets/Photon Unity Networking/UtilityScripts/ManualPhotonViewAllocator.cs"
+"Assets/Photon Unity Networking/UtilityScripts/MoveByKeys.cs"
+"Assets/Photon Unity Networking/UtilityScripts/OnAwakeUsePhotonView.cs"
+"Assets/Photon Unity Networking/UtilityScripts/OnClickDestroy.cs"
+"Assets/Photon Unity Networking/UtilityScripts/OnClickInstantiate.cs"
+"Assets/Photon Unity Networking/UtilityScripts/OnClickLoadSomething.cs"
+"Assets/Photon Unity Networking/UtilityScripts/PointedAtGameObjectInfo.cs"
+"Assets/Photon Unity Networking/UtilityScripts/ServerTime.cs"
+"Assets/Photon Unity Networking/UtilityScripts/SmoothSyncMovement.cs"
+"Assets/Photon Unity Networking/UtilityScripts/TestDontDestroyOnLoad.cs"
+"Assets/Photon Unity Networking/UtilityScripts/TimeKeeper.cs"
+Assets/TerrainToolkit/TerrainToolkit.cs
+-r:"C:/Program Files (x86)/Unity/Editor/Data/Mono\lib/mono/unity\System.Runtime.Serialization.dll"
+-r:"C:/Program Files (x86)/Unity/Editor/Data/Mono\lib/mono/unity\System.Xml.Linq.dll"

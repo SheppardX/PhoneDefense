@@ -204,6 +204,10 @@ public class MainMenu : MonoBehaviour {
 		auswahl="Lobby";
 	}
 
+	void OnFailedToConnectToPhoton(){
+		Debug.Log ("OnFailedToConnectToPhoton");
+	}
+
 	void OnPhotonCreateGameFailed(){
 	}
 

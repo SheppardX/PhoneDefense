@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MGUpgrades : Turret {
+public class MGUpgrades : TurretUpgrades {
 	public static MGUpgrades instance;
 	private int dmg;
 	private int health;

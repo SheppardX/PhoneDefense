@@ -212,7 +212,7 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 	
 	public void AddjustCurrentHealth (float adj)
 	{
-		if(PhotonNetwork.isMasterClient){
+		if(PhotonNetwork.isMasterClient && PlayerPrefs.GetString("online").Equals("Online")){
 			curHealth -= adj;	
 			maxHealth = upgrade.getHealthUpdate(healthLvl);
 			if (curHealth < 0)		

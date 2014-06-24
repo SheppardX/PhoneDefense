@@ -98,19 +98,19 @@ public class AttackGUI : MonoBehaviour {
 		}else{
 			SpielMenuTran = new Vector3(Mathf.Lerp(SpielMenuTran.x,12.43f,(Time.time - startTime) / duration),SpielMenuTran.y,SpielMenuTran.z);
 		}
-		//Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began   Input.GetMouseButtonDown(0)
-		if (Input.GetMouseButtonDown(0) ) {
+		//Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began   Input.GetMouseButtonUp(0)
+		if (Input.GetMouseButtonUp(0) ) {
 			Ray ray = GUIcam.camera.ScreenPointToRay (Input.mousePosition);
 			RaycastHit hit;
 			if(Physics.Raycast(ray, out hit, 1000, layerMask)){
 				switch (hit.collider.name) {
 				case "menuBtn":
-					if(Input.GetMouseButtonDown(0)){
+					if(Input.GetMouseButtonUp(0)){
 						menu = !menu;
 					}
 					break;
 				case "right":
-					if(Input.GetMouseButtonDown(0)){
+					if(Input.GetMouseButtonUp(0)){
 						if(index < textures.Length){
 							++index;
 							UNITIcon.renderer.material.mainTexture = textures[index];
@@ -118,7 +118,7 @@ public class AttackGUI : MonoBehaviour {
 					}
 					break;				
 				case "left":
-					if(Input.GetMouseButtonDown(0)){
+					if(Input.GetMouseButtonUp(0)){
 						if (index > 0){
 							--index;
 							UNITIcon.renderer.material.mainTexture = textures[index];
@@ -126,43 +126,43 @@ public class AttackGUI : MonoBehaviour {
 					}
 					break;				
 				case "Place1":
-					if(Input.GetMouseButtonDown(0)){
+					if(Input.GetMouseButtonUp(0)){
 						Units[0].renderer.material.mainTexture = textures[index];
 						unitsName[0] = aviableUnits[index];
 					}
 					break;
 				case "Place2":
-					if(Input.GetMouseButtonDown(0)){
+					if(Input.GetMouseButtonUp(0)){
 						Units[1].renderer.material.mainTexture = textures[index];
 						unitsName[1] = aviableUnits[index];
 					}
 					break;
 				case "Place3":
-					if(Input.GetMouseButtonDown(0)){
+					if(Input.GetMouseButtonUp(0)){
 						Units[2].renderer.material.mainTexture = textures[index];
 						unitsName[2] = aviableUnits[index];
 					}
 					break;
 				case "Place4":
-					if(Input.GetMouseButtonDown(0)){
+					if(Input.GetMouseButtonUp(0)){
 						Units[3].renderer.material.mainTexture = textures[index];
 						unitsName[3] = aviableUnits[index];
 					}
 					break;
 				case "Place5":
-					if(Input.GetMouseButtonDown(0)){
+					if(Input.GetMouseButtonUp(0)){
 						Units[4].renderer.material.mainTexture = textures[index];
 						unitsName[4] = aviableUnits[index];
 					}
 					break;
 				case "attackBtn":
-					if(Input.GetMouseButtonDown(0)){
+					if(Input.GetMouseButtonUp(0)){
 						list.UnitsName = unitsName;
 						UnitSpawn.instance.startWave();
 					}
 				break;
 				case "DMG+":
-					if(Input.GetMouseButtonDown(0)){
+					if(Input.GetMouseButtonUp(0)){
 						if(upgrade.DamageLvl <= 4 && PlayerStats.instance.money > dmgCostTxt){	
 							PlayerStats.instance.money -= dmgCostTxt;
 							upgrade.DamageLvl +=1;
@@ -171,7 +171,7 @@ public class AttackGUI : MonoBehaviour {
 					}
 					break;
 				case "HTL+":
-					if(Input.GetMouseButtonDown(0)){
+					if(Input.GetMouseButtonUp(0)){
 						if(upgrade.HealthLvl <= 4 && PlayerStats.instance.money > healthCostTxt){		
 							PlayerStats.instance.money -= healthCostTxt;
 							upgrade.HealthLvl +=1;
@@ -180,7 +180,7 @@ public class AttackGUI : MonoBehaviour {
 					}
 					break;
 				case "SPEED+":
-					if(Input.GetMouseButtonDown(0)){
+					if(Input.GetMouseButtonUp(0)){
 						if(upgrade.SpeedLvl <= 4 && PlayerStats.instance.money > speedCostTxt){
 							PlayerStats.instance.money -= speedCostTxt;
 							upgrade.SpeedLvl +=1;

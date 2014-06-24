@@ -123,24 +123,24 @@ public class DefUpgradeMenu : MonoBehaviour {
 			camMov.enabled = true;
 			UpgradeMenuTran = new Vector3(Mathf.Lerp(UpgradeMenuTran.x,12.39f,(Time.time - startTime) / duration),UpgradeMenuTran.y,UpgradeMenuTran.z);
 		}
-		//Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began   Input.GetMouseButton(0)
-		if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) {
-			Ray ray = GUIcam.camera.ScreenPointToRay(Input.GetTouch (0).position);
-			Ray rayMain = maincam.camera.ScreenPointToRay(Input.GetTouch (0).position);
+		//Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began   Input.GetMouseButtonUp(0)
+		if (Input.GetMouseButtonUp(0)) {
+			Ray ray = GUIcam.camera.ScreenPointToRay(Input.mousePosition);
+			Ray rayMain = maincam.camera.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit = new RaycastHit();
 			if(Physics.Raycast(ray, out hit, 1000, layerMask)||Physics.Raycast(rayMain, out hit, 1000, layerMask)){
 				switch (hit.collider.name) {
 				case "MGTurret":
-					if(Input.GetTouch (0).phase == TouchPhase.Began){
+					if(Input.GetMouseButtonUp(0)){
 						upgradeopen = !upgradeopen;					
 						lastHitObj = hit.collider.gameObject;
-						CamTran = new Vector3(lastHitObj.transform.position.x,CamTran.y,lastHitObj.transform.position.z-15);
+					//	CamTran = new Vector3(lastHitObj.transform.position.x,CamTran.y,lastHitObj.transform.position.z-15);
 						lastHitComponent = hit.collider.GetComponent<Turret_MG_ORIGINAL>();
 						upgradeRefresh();
 					}
 				break;
 				case "DMG+":
-					if(Input.GetTouch (0).phase == TouchPhase.Began){
+					if(Input.GetMouseButtonUp(0)){
 						if(lastHitComponent.DamageLvl <= 4 && PlayerStats.instance.money > dmgCostTxt){	
 							PlayerStats.instance.money -= dmgCostTxt;
 							lastHitComponent.DamageLvl +=1;
@@ -149,7 +149,7 @@ public class DefUpgradeMenu : MonoBehaviour {
 					}
 				break;
 				case "HTL+":
-					if(Input.GetTouch (0).phase == TouchPhase.Began){
+					if(Input.GetMouseButtonUp(0)){
 						if(lastHitComponent.HealthLvl <= 4 && PlayerStats.instance.money > healthCostTxt){		
 							PlayerStats.instance.money -= healthCostTxt;
 							lastHitComponent.HealthLvl +=1;
@@ -158,7 +158,7 @@ public class DefUpgradeMenu : MonoBehaviour {
 					}
 					break;
 				case "RANGE+":
-					if(Input.GetTouch (0).phase == TouchPhase.Began){
+					if(Input.GetMouseButtonUp(0)){
 						if(lastHitComponent.RangeLvl <= 4 && PlayerStats.instance.money > rangeCostTxt){
 							PlayerStats.instance.money -= rangeCostTxt;
 							lastHitComponent.RangeLvl +=1;
@@ -167,26 +167,28 @@ public class DefUpgradeMenu : MonoBehaviour {
 					}
 					break;
 				}
-				if(lastHitComponent.DamageLvl <= 3){							
-					DamageCost = new Vector3(DamageCost.x, DamageCost.y, 8);
-					DMGPlus = new Vector3(DMGPlus.x,DMGPlus.y,8);
-				}else{
-					DamageCost = new Vector3(DamageCost.x, DamageCost.y,11);
-					DMGPlus = new Vector3(DMGPlus.x,DMGPlus.y,11);
-				}
-				if(lastHitComponent.HealthLvl <= 3){							
-					HealthCost = new Vector3(HealthCost.x, HealthCost.y, 8);
-					HTLPlus = new Vector3(HTLPlus.x,HTLPlus.y,8);
-				}else{
-					HealthCost = new Vector3(HealthCost.x, HealthCost.y,11);
-					HTLPlus = new Vector3(HTLPlus.x,HTLPlus.y,11);
-				}
-				if(lastHitComponent.RangeLvl <= 3){							
-					RangeCost = new Vector3(RangeCost.x, RangeCost.y, 8);
-					RGEPlus = new Vector3(RGEPlus.x,RGEPlus.y,8);
-				}else{
-					RangeCost = new Vector3(RangeCost.x, RangeCost.y,11);
-					RGEPlus = new Vector3(RGEPlus.x,RGEPlus.y,11);
+				if(lastHitComponent != null){
+					if(lastHitComponent.DamageLvl <= 3){							
+						DamageCost = new Vector3(DamageCost.x, DamageCost.y, 8);
+						DMGPlus = new Vector3(DMGPlus.x,DMGPlus.y,8);
+					}else{
+						DamageCost = new Vector3(DamageCost.x, DamageCost.y,11);
+						DMGPlus = new Vector3(DMGPlus.x,DMGPlus.y,11);
+					}
+					if(lastHitComponent.HealthLvl <= 3){							
+						HealthCost = new Vector3(HealthCost.x, HealthCost.y, 8);
+						HTLPlus = new Vector3(HTLPlus.x,HTLPlus.y,8);
+					}else{
+						HealthCost = new Vector3(HealthCost.x, HealthCost.y,11);
+						HTLPlus = new Vector3(HTLPlus.x,HTLPlus.y,11);
+					}
+					if(lastHitComponent.RangeLvl <= 3){							
+						RangeCost = new Vector3(RangeCost.x, RangeCost.y, 8);
+						RGEPlus = new Vector3(RGEPlus.x,RGEPlus.y,8);
+					}else{
+						RangeCost = new Vector3(RangeCost.x, RangeCost.y,11);
+						RGEPlus = new Vector3(RGEPlus.x,RGEPlus.y,11);
+					}
 				}
 			}
 		}

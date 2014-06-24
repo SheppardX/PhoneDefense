@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class Turret : MonoBehaviour {
+public abstract class TurretUpgrades : MonoBehaviour {
 
 	public abstract string Discribtion {
 				get;
