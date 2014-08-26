@@ -118,7 +118,6 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 
 	private GameObject searchForNewTarget ()
 	{
-		//TODO als globale Singeltonliste 
 		enemyObjList = enemyList.EnemyListMinion;
 
 		foreach (GameObject enemy in enemyObjList) {
@@ -152,9 +151,9 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 		}
 
 
-		if (CurrentTarget == null) {
+		if (CurrentTarget == null)
 				rotate = Quaternion.identity;	
-		} else {
+		else {
 			rotate = Quaternion.LookRotation (CurrentTargetPosition - TurretMG);	
 			coolDown+=Time.deltaTime;
 			if(readyToShoot && distanceToEnemy < upgrade.getRangeUpdate(rangeLvl))
@@ -164,7 +163,6 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 				coolDown = 0;
 			}
 		}
-		Debug.DrawRay (TurretMG, forward * upgrade.getRangeUpdate(rangeLvl), Color.red);
 		turretMG.rotation = Quaternion.Lerp (turretMG.rotation, rotate, Time.deltaTime * rotationDamp);
 
 		if(curHealth <= 0){		

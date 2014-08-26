@@ -6,15 +6,15 @@ public class UnitSpawn : MonoBehaviour
 {
 	public static UnitSpawn instance;
 	//Your enemy character prefab (Must have a character controller component)
-	public GameObject enemyPrefab;
+	public GameObject unit;
 
-	//How high above the ground you want your enemy spawned (0 = ground level)
+	//How high above the ground you want your unit spawned (0 = ground level)
 	public float spawnHeightOffset = 0.0f;
 
-	//The minimum distance from the target your enemies will spawn
+	//The minimum distance from the target your units will spawn
 	public float spawnRadiusMin = 20.0f;
 
-	//The maximum distance from the target your enemies will spawn
+	//The maximum distance from the target your units will spawn
 	public float spawnRadiusMax = 30.0f;
 
 	//The amount of time between each spawn
@@ -24,10 +24,12 @@ public class UnitSpawn : MonoBehaviour
 
 	//Are you using a terrain? Script uses this to calculate how high above the enemy needs to be placed on spawn
 	public bool useTerrain = true;
+	//Start of the wave timer
 	private bool timerStarted = false;
+	//GUI text for wavedelay
 	public TextMesh startDelay;
-	//How tall is your enemy character
-	private float enemyHeight;
+	//How tall is are your units
+	private float unitHeight;
 
 	//!!!IMPORTANT!!! SEVERAL OF UNITS
 	public string[] Units;
@@ -35,14 +37,14 @@ public class UnitSpawn : MonoBehaviour
 	//What is the current wave
 	public int curWave = 1;
 	private PhotonView view;
-	//Is the spawn system currently spawning enemies
+	//Is the spawn system currently spawning units
 	private bool isSpawning = false;
 	private bool isLastDead = false;
-	//The initial maximum number of enemies per wave
-	public int maxEnemies = 5;
+	//The initial maximum number of units per wave
+	public int maxUnits = 5;
 
-	//The current enemies in the scene
-	public GameObject[] curEnemies;
+	//The current units in the scene
+	public GameObject[] curUnits;
 
 	//The selected spawn point (Random angle and distance from target)
 	private Vector3 spawnPoint;
@@ -58,16 +60,16 @@ public class UnitSpawn : MonoBehaviour
 	void Update ()
 	{
 		
-		//Check if the script is NOT spawning enemies
+		//Check if the script is NOT spawning units
 		if(!PhotonNetwork.isMasterClient){
 			if (!isSpawning) {
 
-				//Check how many enemies are still in the scene
-				curEnemies = GameObject.FindGameObjectsWithTag ("Enemy");
+				//Check how many units are still in the scene
+				curUnits = GameObject.FindGameObjectsWithTag ("Enemy");
 
-				//When there are no more enemies left, increase the current wave
+				//When there are no more units left, increase the current wave
 				isLastDead=false;
-				if (curEnemies.Length <= 0 && !timerStarted) {
+				if (curUnits.Length <= 0 && !timerStarted) {
 					isLastDead=true;
 					StartCoroutine (Timer ());
 					timerStarted = true;
@@ -80,12 +82,12 @@ public class UnitSpawn : MonoBehaviour
 	}
 
 	IEnumerator SpawnEnemy (){
-		//Tell script that we are currently spawning enemies
+		//Tell script that we are currently spawning units
 		isLastDead = false;
 		isSpawning = true;
 
-		//Loop until script has spawned the maximum number of enemies for this round
-		for (int i = 0; i < maxEnemies; i++) {
+		//Loop until script has spawned the maximum number of units for this round
+		for (int i = 0; i < maxUnits; i++) {
 
 			//Delay between spawning
 			yield return new WaitForSeconds(spawnDelay);
@@ -94,23 +96,23 @@ public class UnitSpawn : MonoBehaviour
 			FindSpawnPoint (Random.Range (spawnRadiusMin, spawnRadiusMax), Random.Range (0, 359));
 
 			//Spawn an enemy at the random spawn point
-			GameObject enemyPrefab2 = enemyPrefab;
+			GameObject enemyPrefab2 = unit;
 			GameObject clone;			
 			if(PlayerPrefs.GetString("online").Equals("Online")){
 				clone = (GameObject)PhotonNetwork.Instantiate (Units[i], spawnPoint, Quaternion.identity,0);
 			}else{
-				clone = (GameObject)Instantiate (enemyPrefab, spawnPoint, Quaternion.identity);
+				clone = (GameObject)Instantiate (unit, spawnPoint, Quaternion.identity);
 			}
 			isLastDead=false;
 			clone.name = "AttackCube" + i;
-			curEnemies = GameObject.FindGameObjectsWithTag ("Enemy");
+			curUnits = GameObject.FindGameObjectsWithTag ("Enemy");
 		}
 		while (!isLastDead) {
-			curEnemies = GameObject.FindGameObjectsWithTag ("Enemy");
+			curUnits = GameObject.FindGameObjectsWithTag ("Enemy");
 			yield return new WaitForSeconds(0);
 		
 
-			if(curEnemies.Length<=0){
+			if(curUnits.Length<=0){
 				isLastDead=true;
 			}
 		}
@@ -172,8 +174,8 @@ public class UnitSpawn : MonoBehaviour
 
 		}
 
-		//Add half of the enemies height to the y value (So that his feet are on the ground, not waist deep)
-		spawnPoint.y += (enemyHeight / 2) + spawnHeightOffset;
+		//Add half of the units height to the y value (So that his feet are on the ground, not waist deep)
+		spawnPoint.y += (unitHeight / 2) + spawnHeightOffset;
 
 		//Return the final spawn point
 		return spawnPoint;
@@ -190,8 +192,8 @@ public class UnitSpawn : MonoBehaviour
 	{
 
 		//GUI.Label (new Rect (10, 130, 100, 30), "Wave " + curWave.ToString ());		
-		GUI.Label (new Rect (10, 160, 400, 100), waveCounter.ToString());
-		GUI.Label (new Rect (10, 190, 400, 100), isLastDead.ToString());
+		//GUI.Label (new Rect (10, 160, 400, 100), waveCounter.ToString());
+		//GUI.Label (new Rect (10, 190, 400, 100), isLastDead.ToString());
 	}
 	
 }

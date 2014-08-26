@@ -75,7 +75,7 @@ public class Turret_Placement : MonoBehaviour {
 						
 						newStructure = (GameObject)Instantiate(allStrucutres[strucureIndex], lastHitObj.transform.position-startPos, Quaternion.identity);
 					}
-					newStructure.name = "MGTurret";
+					newStructure.name = allStrucutres[strucureIndex].name;
 					Vector3 temp = newStructure.transform.localEulerAngles;
 					PlayerStats.instance.money -= cost[strucureIndex];
 					temp.y = (Random.Range(0,360));

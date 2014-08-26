@@ -30,7 +30,7 @@ public class DefUpgradeMenu : MonoBehaviour {
 	private bool upgradeopen;
 	private int layerMask = (1<<11)|(1<<10)|(1<<9);
 	private float startTime = 0.0f;
-	private float duration = 8.0f;
+	private float duration = 2.0f;
 	// Use this for initialization
 	public Vector3 CamTran {
 		get{
@@ -100,10 +100,12 @@ public class DefUpgradeMenu : MonoBehaviour {
 
 	void Awake () {
 
-		upgradeopen = false;
+
 	}
 
 	void Start(){		
+
+		upgradeopen = false;
 		camMov = maincam.GetComponent<CameraMovement>();
 		upgrades = GetComponent<MGUpgrades>();
 	}
@@ -130,7 +132,7 @@ public class DefUpgradeMenu : MonoBehaviour {
 			RaycastHit hit = new RaycastHit();
 			if(Physics.Raycast(ray, out hit, 1000, layerMask)||Physics.Raycast(rayMain, out hit, 1000, layerMask)){
 				switch (hit.collider.name) {
-				case "MGTurret":
+				case "MGturret":
 					if(Input.GetMouseButtonUp(0)){
 						upgradeopen = !upgradeopen;					
 						lastHitObj = hit.collider.gameObject;

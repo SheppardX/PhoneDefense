@@ -157,12 +157,11 @@ public class Turret_Patroit : MonoBehaviour {
 		if (CurrentTarget == null) {
 			rotateCoolDown+=Time.deltaTime;
 			if(rotateCoolDown >= Random.Range(2f,10f)){
-				rotateAngle = new Vector3(0,Random.Range(0f,360f),0);
-				rotateCoolDown = 0;
+				rotateAngle = new Vector3(Random.Range(0f,360f),0,0);
+				rotateCoolDown = 0;				
 			}
 			rotate = Quaternion.LookRotation(rotateAngle);
 			Debug.Log(rotate);
-
 		} else {
 			rotate = Quaternion.LookRotation (CurrentTargetPosition - TurretMG);	
 			coolDown+=Time.deltaTime;

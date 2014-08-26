@@ -29,12 +29,10 @@ public class MultiplayerManager : MonoBehaviour {
 	}
 
 	public void StartServer(string serverName,string serverPassword){
-
 		PhotonNetwork.CreateRoom (serverName,true,true,MatchMaxUser);
-
 		//Network.InitializeSecurity ();
-
 	}
+	
 
 	public void saveSettings(){
 		pv.RPC ("Client_GetMultiplayerMatchSettings", PhotonTargets.All,currentMap.MapName,currentMap.budget,currentMap.inComeSec);

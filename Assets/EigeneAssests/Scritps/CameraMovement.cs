@@ -40,9 +40,9 @@ public class CameraMovement : MonoBehaviour{
 			//If the finger has moved and it's the finger that started the touch, change the camera speed:
 			if(t.phase==TouchPhase.Moved && t.fingerId==scrollTouchID){
 				cameraSpeed.x = (t.deltaPosition.x/5)*(-1);
-				cameraSpeed.z = (t.deltaPosition.y/5)*(-1);
-				
+				cameraSpeed.z = (t.deltaPosition.y/5)*(-1);				
 			}
+
 			if (Input.touchCount == 2){				
 				cameraSpeed.z = 0;
 				cameraSpeed.x = 0;
