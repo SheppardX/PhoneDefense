@@ -39,25 +39,25 @@ public class Turret_Placement : MonoBehaviour {
 			foreach(GameObject item in placementChildrenRenderer){
 				item.GetComponent<Renderer>().enabled = true;
 			}
-			Ray ray = GUIcam.camera.ScreenPointToRay(Input.mousePosition);
-			Ray rayMain = maincam.camera.ScreenPointToRay(Input.mousePosition);
+			Ray ray = GUIcam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+			Ray rayMain = maincam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit = new RaycastHit();
 			if(Physics.Raycast(ray, out hit, 1000, layerMask)||Physics.Raycast(rayMain, out hit, 1000, layerMask)){
 				//Debug.Log(hit.collider.name);
 				if(lastHitObj){
-					lastHitObj.renderer.material = originalMat;	
+					lastHitObj.GetComponent<Renderer>().material = originalMat;	
 				}				
 				if(hit.collider.name.Equals("Plane")){
 					lastHitObj = hit.collider.gameObject;
-					originalMat = lastHitObj.renderer.material;
-					lastHitObj.renderer.material = hoverMat;
+					originalMat = lastHitObj.GetComponent<Renderer>().material;
+					lastHitObj.GetComponent<Renderer>().material = hoverMat;
 				}
 			}
 			
 		}
 		else{
 			if(lastHitObj){
-				lastHitObj.renderer.material = originalMat;
+				lastHitObj.GetComponent<Renderer>().material = originalMat;
 				lastHitObj = null;
 			}
 			foreach(GameObject item in placementChildrenRenderer){

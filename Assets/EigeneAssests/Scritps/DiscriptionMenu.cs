@@ -47,7 +47,7 @@ public class DiscriptionMenu : MonoBehaviour {
 			DiscripMenuTran = new Vector3(DiscripMenuTran.x,Mathf.Lerp(DiscripMenuTran.y,-3.8f,(Time.time - startTime) / duration),DiscripMenuTran.z);
 		}
 		if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began ) {
-			Ray ray = GUIcam.camera.ScreenPointToRay (Input.GetTouch (0).position);
+			Ray ray = GUIcam.GetComponent<Camera>().ScreenPointToRay (Input.GetTouch (0).position);
 			RaycastHit hit;
 			if(Physics.Raycast(ray, out hit, 1000, layerMask)){
 				if(hit.collider.name.Equals("MGIcon")){

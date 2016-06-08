@@ -18,11 +18,11 @@ public class PlayerStats : MonoBehaviour {
 		money = PlayerPrefs.GetInt("Budget");
 		InComeSek = PlayerPrefs.GetInt("InCome");
 		if(PhotonNetwork.isMasterClient && PlayerPrefs.GetString("online").Equals("Online")||PlayerPrefs.GetString("online").Equals("Offline")){
-			AttCam.camera.enabled = false;			
+			AttCam.GetComponent<Camera>().enabled = false;			
 			GetComponent<AttackGUI>().enabled = false;		
 		}
 		else{			
-			DefCam.camera.enabled = false;
+			DefCam.GetComponent<Camera>().enabled = false;
 			GetComponent<DefendGUI>().enabled = false;		
 		}
 	}

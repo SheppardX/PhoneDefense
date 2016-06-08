@@ -52,17 +52,17 @@ public class CameraMovement : MonoBehaviour{
 					curDist = touch.position - touch1.position;
 					prevDist = (touch.position - touch.deltaPosition) - (touch1.position - touch1.deltaPosition);
 					delta = prevDist.magnitude - curDist.magnitude;
-					desiredPosition = camera.transform.position + cameraSpeed;
+					desiredPosition = GetComponent<Camera>().transform.position + cameraSpeed;
 					if (desiredPosition.y < minCameraY){
 						delta = 0;
-						temp = camera.transform.position;
+						temp = GetComponent<Camera>().transform.position;
 						temp.y = minCameraY;
-						camera.transform.position = temp;
+						GetComponent<Camera>().transform.position = temp;
 					} else if( maxCameraY < desiredPosition.y){
 						 delta = 0;
-						temp = camera.transform.position;
+						temp = GetComponent<Camera>().transform.position;
 						temp.y = maxCameraY;
-						camera.transform.position = temp;
+						GetComponent<Camera>().transform.position = temp;
 					}
 					Camera.main.transform.Translate(0,delta*0.05f,0,Space.World);
 				}
@@ -71,14 +71,14 @@ public class CameraMovement : MonoBehaviour{
 		
 		// Move camera according to current camera speed:
 		cameraPosition = Camera.main.transform.position;
-		desiredPosition = camera.transform.position + cameraSpeed;
+		desiredPosition = GetComponent<Camera>().transform.position + cameraSpeed;
 		if (desiredPosition.x < minCameraX || maxCameraX < desiredPosition.x){
 			cameraSpeed.x = 0;
 		}
 		if (desiredPosition.z < minCameraZ || maxCameraZ < desiredPosition.z) {
 			cameraSpeed.z = 0;
 		}
-		camera.transform.position = new Vector3(desiredPosition.x, desiredPosition.y,cameraPosition.z + cameraSpeed.z);
+		GetComponent<Camera>().transform.position = new Vector3(desiredPosition.x, desiredPosition.y,cameraPosition.z + cameraSpeed.z);
 			
 		// Lower camera speed to make the camera stop moving slowly:
 		cameraSpeed.x = 0.8f*cameraSpeed.x;

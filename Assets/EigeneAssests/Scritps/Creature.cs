@@ -63,12 +63,12 @@ public class Creature : MonoBehaviour {
 		}else{
 			forwardFaktor = 0.0f;	
 		}
-		rigidbody.velocity += transform.forward * forwardFaktor * upgrade.getSpeedUpdate(upgrade.SpeedLvl);
+		GetComponent<Rigidbody>().velocity += transform.forward * forwardFaktor * upgrade.getSpeedUpdate(upgrade.SpeedLvl);
 		
-		velocity = rigidbody.velocity;
+		velocity = GetComponent<Rigidbody>().velocity;
 		velocity.x *= friction;
 		velocity.z *= friction;		
-		rigidbody.velocity = velocity;
+		GetComponent<Rigidbody>().velocity = velocity;
 	}
 
 

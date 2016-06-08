@@ -127,8 +127,8 @@ public class DefUpgradeMenu : MonoBehaviour {
 		}
 		//Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began   Input.GetMouseButtonUp(0)
 		if (Input.GetMouseButtonUp(0)) {
-			Ray ray = GUIcam.camera.ScreenPointToRay(Input.mousePosition);
-			Ray rayMain = maincam.camera.ScreenPointToRay(Input.mousePosition);
+			Ray ray = GUIcam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+			Ray rayMain = maincam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit = new RaycastHit();
 			if(Physics.Raycast(ray, out hit, 1000, layerMask)||Physics.Raycast(rayMain, out hit, 1000, layerMask)){
 				switch (hit.collider.name) {

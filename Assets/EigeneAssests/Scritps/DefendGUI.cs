@@ -62,11 +62,11 @@ public class DefendGUI : MonoBehaviour {
 	void Update(){
 		if(Turret_Placement.instance.buildPanalOpen){
 			camMov.enabled = false;
-			menuButton.renderer.material.mainTexture = textures[1];
+			menuButton.GetComponent<Renderer>().material.mainTexture = textures[1];
 			SpielMenuTran = new Vector3(Mathf.Lerp(SpielMenuTran.x,4.45f,(Time.time - startTime) / duration),SpielMenuTran.y,SpielMenuTran.z);
 		}else{
 			camMov.enabled = true;
-			menuButton.renderer.material.mainTexture = textures[0];
+			menuButton.GetComponent<Renderer>().material.mainTexture = textures[0];
 			SpielMenuTran = new Vector3(Mathf.Lerp(SpielMenuTran.x,11,(Time.time - startTime) / duration),SpielMenuTran.y,SpielMenuTran.z);
 		}
 		if(discrptionopen){
@@ -79,7 +79,7 @@ public class DefendGUI : MonoBehaviour {
 		}
 		//Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began   Input.GetMouseButtonUp(0)
 		if (Input.GetMouseButtonUp(0)) {
-			Ray ray = GUIcam.camera.ScreenPointToRay (Input.mousePosition);
+			Ray ray = GUIcam.GetComponent<Camera>().ScreenPointToRay (Input.mousePosition);
 			RaycastHit hit;
 			if(Physics.Raycast(ray, out hit, 1000, layerMask)){
 				switch (hit.collider.name) {
@@ -88,7 +88,7 @@ public class DefendGUI : MonoBehaviour {
 						Turret_Placement.instance.buildPanalOpen = !Turret_Placement.instance.buildPanalOpen;
 						discrptionopen = false;
 						toggle = false;
-						MGIcon.renderer.material.mainTexture = textures[2];
+						MGIcon.GetComponent<Renderer>().material.mainTexture = textures[2];
 						Turret_Placement.instance.strucureIndex = 0;
 					}
 					break;
@@ -96,12 +96,12 @@ public class DefendGUI : MonoBehaviour {
 					if(Input.GetMouseButtonUp(0)){
 						toggle = !toggle;
 						if(toggle){
-							MGIcon.renderer.material.mainTexture = textures[3];
+							MGIcon.GetComponent<Renderer>().material.mainTexture = textures[3];
 							Turret_Placement.instance.strucureIndex = 1;
 							discrptionopen = true;
 						}else{
 							discrptionopen = false;
-							MGIcon.renderer.material.mainTexture = textures[2];
+							MGIcon.GetComponent<Renderer>().material.mainTexture = textures[2];
 							Turret_Placement.instance.strucureIndex = 0;
 						}
 						dmgTxt = upgrades.getDamageUpdate(0).ToString();
@@ -114,12 +114,12 @@ public class DefendGUI : MonoBehaviour {
 					if(Input.GetMouseButtonUp(0)){
 						toggle = !toggle;
 						if(toggle){
-							PatIcon.renderer.material.mainTexture = textures[5];
+							PatIcon.GetComponent<Renderer>().material.mainTexture = textures[5];
 							Turret_Placement.instance.strucureIndex = 2;
 							discrptionopen = true;
 						}else{
 							discrptionopen = false;
-							PatIcon.renderer.material.mainTexture = textures[4];
+							PatIcon.GetComponent<Renderer>().material.mainTexture = textures[4];
 							Turret_Placement.instance.strucureIndex = 0;
 						}
 						dmgTxt = upgrades.getDamageUpdate(0).ToString();

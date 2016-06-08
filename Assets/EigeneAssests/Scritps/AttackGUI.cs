@@ -97,7 +97,7 @@ public class AttackGUI : MonoBehaviour {
 		}
 		//Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began   Input.GetMouseButtonUp(0)
 		if (Input.GetMouseButtonUp(0) ) {
-			Ray ray = GUIcam.camera.ScreenPointToRay (Input.mousePosition);
+			Ray ray = GUIcam.GetComponent<Camera>().ScreenPointToRay (Input.mousePosition);
 			RaycastHit hit;
 			if(Physics.Raycast(ray, out hit, 1000, layerMask)){
 				switch (hit.collider.name) {
@@ -110,7 +110,7 @@ public class AttackGUI : MonoBehaviour {
 					if(Input.GetMouseButtonUp(0)){
 						if(index < textures.Length){
 							++index;
-							UNITIcon.renderer.material.mainTexture = textures[index];
+							UNITIcon.GetComponent<Renderer>().material.mainTexture = textures[index];
 						}
 					}
 					break;				
@@ -118,37 +118,37 @@ public class AttackGUI : MonoBehaviour {
 					if(Input.GetMouseButtonUp(0)){
 						if (index > 0){
 							--index;
-							UNITIcon.renderer.material.mainTexture = textures[index];
+							UNITIcon.GetComponent<Renderer>().material.mainTexture = textures[index];
 						}
 					}
 					break;				
 				case "Place1":
 					if(Input.GetMouseButtonUp(0)){
-						Units[0].renderer.material.mainTexture = textures[index];
+						Units[0].GetComponent<Renderer>().material.mainTexture = textures[index];
 						unitsName[0] = aviableUnits[index];
 					}
 					break;
 				case "Place2":
 					if(Input.GetMouseButtonUp(0)){
-						Units[1].renderer.material.mainTexture = textures[index];
+						Units[1].GetComponent<Renderer>().material.mainTexture = textures[index];
 						unitsName[1] = aviableUnits[index];
 					}
 					break;
 				case "Place3":
 					if(Input.GetMouseButtonUp(0)){
-						Units[2].renderer.material.mainTexture = textures[index];
+						Units[2].GetComponent<Renderer>().material.mainTexture = textures[index];
 						unitsName[2] = aviableUnits[index];
 					}
 					break;
 				case "Place4":
 					if(Input.GetMouseButtonUp(0)){
-						Units[3].renderer.material.mainTexture = textures[index];
+						Units[3].GetComponent<Renderer>().material.mainTexture = textures[index];
 						unitsName[3] = aviableUnits[index];
 					}
 					break;
 				case "Place5":
 					if(Input.GetMouseButtonUp(0)){
-						Units[4].renderer.material.mainTexture = textures[index];
+						Units[4].GetComponent<Renderer>().material.mainTexture = textures[index];
 						unitsName[4] = aviableUnits[index];
 					}
 					break;
