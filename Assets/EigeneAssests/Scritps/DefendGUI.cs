@@ -132,8 +132,8 @@ public class DefendGUI : MonoBehaviour {
 			}		
 		}
 		if(Spawn.GetComponent<UnitSpawn>().enabled)
-			wave.text = UnitSpawn.instance.curWave.ToString ();
-			live.text = PlayerStats.instance.livePoints.ToString ();
+			wave.text = UnitSpawn.instance.remainWave.ToString ();
+			live.text = PlayerStats.instance.setLivePoins.ToString ();
 			money.text = PlayerStats.instance.money.ToString ();
 
 		}

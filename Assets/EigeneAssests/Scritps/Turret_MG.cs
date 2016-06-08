@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
-public class Turret_MG_ORIGINAL : MonoBehaviour
+[RequireComponent (typeof(Upgrades))]
+public class Turret_MG : MonoBehaviour
 {
 
-	public static Turret_MG_ORIGINAL instance;
+	public static Turret_MG instance;
 	public float rotationDamp = 2.0f;
 	public float distanceToEnemy;
 	public Transform turretMG;
@@ -18,14 +18,18 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 	public float healthBarLength;
 	public Texture2D progressBarEmpty;
 	public Texture2D progressBarFull;
+	public float coolDown;
+	public float lineDrawSpeed;
+	public Upgrades upgrades;
+	private LineRenderer shootEffect;
+	private float counter;
 	private PlacementPlane placePlane;
 	private bool readyToShoot = true;
 	private float nextFireTime = 0.5f;
-	public float coolDown;
 	private Vector2 size = new Vector2(60,20);
 	private EnemyGlobalList enemyList;
-	private MGUpgrades upgrade;
 	private Vector3 yOld;
+	private MGUpgrades upgrade;
 	private Quaternion rotate;
 	private RaycastHit hit;
 	private Vector3 forward;
@@ -53,42 +57,7 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 			turretMG.position = value;
 		}
 	}
-
-	public int DamageLvl {
-		get{
-			return dmgLvl;
-		}
-		set{
-			if(PlayerPrefs.GetString("online").Equals("Online"))
-				view.RPC("UpgradeDMG",PhotonTargets.All,value);
-			else
-				dmgLvl = value;
-		}
-	}
-	public int HealthLvl {
-		get{
-			return healthLvl;
-		}
-		set{
-			if(PlayerPrefs.GetString("online").Equals("Online"))
-				view.RPC("UpgradeHealth",PhotonTargets.All,value);
-			else{
-				healthLvl = value;
-				curHealth = upgrade.getHealthUpdate(healthLvl);
-			}
-		}
-	}
-	public int RangeLvl {
-		get{
-			return rangeLvl;
-		}
-		set{
-			if(PlayerPrefs.GetString("online").Equals("Online"))
-				view.RPC("UpgradeRange",PhotonTargets.All,value);
-			else
-				rangeLvl = value;
-		}
-	}
+	
 
 	private Vector3 ObjPosition {
 		get{
@@ -122,7 +91,7 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 
 		foreach (GameObject enemy in enemyObjList) {
 			distanceToEnemy = Vector3.Distance (enemy.transform.position, TurretMG);	
-			if (distanceToEnemy <= upgrade.getRangeUpdate(rangeLvl))
+			if (distanceToEnemy <= upgrade.getRangeUpdate(upgrades.RangeLvl))
 					return enemy;
 		}
 		return null;
@@ -132,16 +101,20 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 		instance = this;
 		startTime = Time.time;
 		placed = true;	
+		upgrade = MGUpgrades.instance;
 		yOld = ObjPosition + Turret_Placement.instance.startPos;			
 		view = PhotonView.Get(this);
 		enemyList = EnemyGlobalList.instance;
-		upgrade = MGUpgrades.instance;
-		curHealth = (float)upgrade.getHealthUpdate(healthLvl);
-		maxHealth = upgrade.getHealthUpdate(healthLvl);
+		curHealth = (float)upgrade.getHealthUpdate(upgrades.HealthLvl);
+		maxHealth = upgrade.getHealthUpdate(upgrades.HealthLvl);
 		healthBarLength = curHealth /(float)maxHealth;
 	}
 	void Start(){
-
+		Vector3 temp = yOld + new Vector3(0,2,0);
+		shootEffect = GetComponent<LineRenderer>();
+		shootEffect.SetPosition(0,temp);
+		shootEffect.SetPosition (1, temp);
+		shootEffect.SetWidth(.45f,.45f);
 	}
 
 	void Update ()
@@ -151,12 +124,13 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 		}
 
 
-		if (CurrentTarget == null)
-				rotate = Quaternion.identity;	
+		if (CurrentTarget == null) {
+			//	rotate = Quaternion.identity;	
+		}
 		else {
 			rotate = Quaternion.LookRotation (CurrentTargetPosition - TurretMG);	
 			coolDown+=Time.deltaTime;
-			if(readyToShoot && distanceToEnemy < upgrade.getRangeUpdate(rangeLvl))
+			if(readyToShoot && distanceToEnemy < upgrade.getRangeUpdate(upgrades.RangeLvl))
 				FireProjectile ();
 			if(coolDown >= nextFireTime){
 				readyToShoot = true;
@@ -181,22 +155,19 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 
 	void FireProjectile (){
 		readyToShoot = false;
-		CurrentTarget.GetComponent<Creature>().AddjustCurrentHealth(upgrade.getDamageUpdate(dmgLvl));
+		counter += .1f / lineDrawSpeed;
+		float x = Mathf.Lerp(0,distanceToEnemy,counter);
+		Vector3 ab = x * Vector3.Normalize(CurrentTargetPosition-TurretMG)+TurretMG;
+		shootEffect.SetPosition(1, ab);
+		counter = 0;
+		CurrentTarget.GetComponent<Creature>().AddjustCurrentHealth(upgrade.getDamageUpdate(upgrades.DamageLvl));
+		StartCoroutine (Wait ());		
+	}
+	IEnumerator Wait() {
+		yield return new WaitForFixedUpdate();		
+		shootEffect.SetPosition(1, TurretMG);
 	}
 
-	[RPC]
-	void UpgradeDMG(int value){
-		dmgLvl = value;
-	}
-	[RPC]
-	void UpgradeHealth(int value){
-		healthLvl = value;
-		curHealth = upgrade.getHealthUpdate(healthLvl);
-	}
-	[RPC]
-	void UpgradeRange(int value){
-		rangeLvl = value;
-	}
 
 	void OnGUI(){			
 		targetPos = Camera.main.WorldToScreenPoint (transform.position);
@@ -212,7 +183,7 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 	{
 		if(PhotonNetwork.isMasterClient && PlayerPrefs.GetString("online").Equals("Online")){
 			curHealth -= adj;	
-			maxHealth = upgrade.getHealthUpdate(healthLvl);
+			maxHealth = upgrade.getHealthUpdate(upgrades.HealthLvl);
 			if (curHealth < 0)		
 				curHealth = 0;	
 			if (curHealth > maxHealth)		
@@ -223,7 +194,7 @@ public class Turret_MG_ORIGINAL : MonoBehaviour
 			view.RPC("NetworkHealth",PhotonTargets.All,curHealth,maxHealth,healthBarLength);
 		}else if(PlayerPrefs.GetString("online").Equals("Offline")){
 			curHealth -= adj;	
-			maxHealth = upgrade.getHealthUpdate(healthLvl);
+			maxHealth = upgrade.getHealthUpdate(upgrades.HealthLvl);
 			if (curHealth < 0)		
 				curHealth = 0;	
 			if (curHealth > maxHealth)		

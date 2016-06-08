@@ -18,7 +18,6 @@ public class EnemiAI : MonoBehaviour {
 	public float coolDown;
 	private MinionUpgrade upgrade;
 	private Quaternion rotate;
-	private Vector3 forward;
 	private GameObject _currentTarget = null;
 	private Creature myCreature;
 	private EnemyGlobalList enemyList;
@@ -38,6 +37,7 @@ public class EnemiAI : MonoBehaviour {
 	void Update () {
 		UpdateWalkPath(); 
 		if(targetIndex >= targetPoints.Length){
+			PlayerStats.instance.livePointsDmg();
 			DestroyObject(gameObject);
 		}
 
@@ -56,7 +56,7 @@ public class EnemiAI : MonoBehaviour {
 				coolDown = 0;
 			}
 		}
-		Debug.DrawRay (weapon.position, forward * range, Color.red);
+		Debug.DrawRay (weapon.position, Vector3.forward * range, Color.red);
 		weapon.rotation = Quaternion.Lerp (weapon.rotation, rotate, Time.deltaTime * rotationDamp);
 		
 	}
@@ -121,7 +121,17 @@ public class EnemiAI : MonoBehaviour {
 	void FireProjectile ()
 	{
 		readyToShoot = false;
-		CurrentTarget.GetComponent<Turret_MG_ORIGINAL>().AddjustCurrentHealth(damage);				
+		switch (CurrentTarget.name) {
+		case "Turret_MG":
+			CurrentTarget.GetComponent<Turret_MG>().AddjustCurrentHealth(damage);	
+			break;
+		case "Turret_Patroit":
+			CurrentTarget.GetComponent<Turret_Patroit>().AddjustCurrentHealth(damage);
+			break;
+		default:
+			break;
+		}
+					
 	}
 
 }

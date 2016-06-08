@@ -35,7 +35,7 @@ public class UnitSpawn : MonoBehaviour
 	public string[] Units;
 
 	//What is the current wave
-	public int curWave = 1;
+	public int remainWave = 50;
 	private PhotonView view;
 	//Is the spawn system currently spawning units
 	private bool isSpawning = false;
@@ -96,7 +96,6 @@ public class UnitSpawn : MonoBehaviour
 			FindSpawnPoint (Random.Range (spawnRadiusMin, spawnRadiusMax), Random.Range (0, 359));
 
 			//Spawn an enemy at the random spawn point
-			GameObject enemyPrefab2 = unit;
 			GameObject clone;			
 			if(PlayerPrefs.GetString("online").Equals("Online")){
 				clone = (GameObject)PhotonNetwork.Instantiate (Units[i], spawnPoint, Quaternion.identity,0);
@@ -150,7 +149,8 @@ public class UnitSpawn : MonoBehaviour
 	}
 	public void startWave (){
 		if(isLastDead){
-			waveCounter=0;
+			waveCounter = 0;
+			remainWave--;
 			isLastDead = false;
 			isSpawning = false;	
 		}

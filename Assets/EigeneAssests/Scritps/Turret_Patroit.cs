@@ -20,6 +20,9 @@ public class Turret_Patroit : MonoBehaviour {
 	public float coolDown;
 	public float rotateCoolDown;
 	public Vector3 rotateAngle; 
+	public Transform[] muzzles;
+	public GameObject rocket;
+	private GameObject newStructure;
 	private PlacementPlane placePlane;
 	private bool readyToShoot = true;
 	private float nextFireTime = 5.5f;
@@ -55,41 +58,7 @@ public class Turret_Patroit : MonoBehaviour {
 		}
 	}
 	
-	public int DamageLvl {
-		get{
-			return dmgLvl;
-		}
-		set{
-			if(PlayerPrefs.GetString("online").Equals("Online"))
-				view.RPC("UpgradeDMG",PhotonTargets.All,value);
-			else
-				dmgLvl = value;
-		}
-	}
-	public int HealthLvl {
-		get{
-			return healthLvl;
-		}
-		set{
-			if(PlayerPrefs.GetString("online").Equals("Online"))
-				view.RPC("UpgradeHealth",PhotonTargets.All,value);
-			else{
-				healthLvl = value;
-				curHealth = upgrade.getHealthUpdate(healthLvl);
-			}
-		}
-	}
-	public int RangeLvl {
-		get{
-			return rangeLvl;
-		}
-		set{
-			if(PlayerPrefs.GetString("online").Equals("Online"))
-				view.RPC("UpgradeRange",PhotonTargets.All,value);
-			else
-				rangeLvl = value;
-		}
-	}
+
 	
 	private Vector3 ObjPosition {
 		get{
@@ -143,10 +112,7 @@ public class Turret_Patroit : MonoBehaviour {
 		maxHealth = upgrade.getHealthUpdate(healthLvl);
 		healthBarLength = curHealth /(float)maxHealth;
 	}
-	void Start(){
-		
-	}
-	
+
 	void Update ()
 	{
 		if (placed) {			
@@ -155,13 +121,13 @@ public class Turret_Patroit : MonoBehaviour {
 		
 		
 		if (CurrentTarget == null) {
-			rotateCoolDown+=Time.deltaTime;
+		/**	rotateCoolDown+=Time.deltaTime;
 			if(rotateCoolDown >= Random.Range(2f,10f)){
 				rotateAngle = new Vector3(Random.Range(0f,360f),0,0);
 				rotateCoolDown = 0;				
 			}
 			rotate = Quaternion.LookRotation(rotateAngle);
-			Debug.Log(rotate);
+			Debug.Log(rotate);**/
 		} else {
 			rotate = Quaternion.LookRotation (CurrentTargetPosition - TurretMG);	
 			coolDown+=Time.deltaTime;
@@ -191,7 +157,18 @@ public class Turret_Patroit : MonoBehaviour {
 	
 	void FireProjectile (){
 		readyToShoot = false;
-		CurrentTarget.GetComponent<Creature>().AddjustCurrentHealth(upgrade.getDamageUpdate(dmgLvl));
+		if(PlayerPrefs.GetString("online").Equals("Online")){
+			newStructure = (GameObject)PhotonNetwork.Instantiate(rocket.name, muzzles[Random.Range(0,3)].position, Quaternion.identity,0);
+		}else{
+			
+			newStructure = (GameObject)Instantiate(rocket,  muzzles[Random.Range(0,3)].position, Quaternion.identity);
+		}
+		Rocket temp = newStructure.GetComponent<Rocket> ();
+		temp.range = upgrade.getRangeUpdate (rangeLvl);
+		temp.target = CurrentTarget;
+		temp.targetPosition = CurrentTargetPosition;
+		temp.damange = upgrade.getDamageUpdate (dmgLvl);
+
 	}
 	
 	[RPC]

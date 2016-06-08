@@ -19,7 +19,6 @@ public class MainMenu : MonoBehaviour {
 	public Rect windowRect;
 	public GUISkin myskin = null;	
 	public static MainMenu instance;
-	private RoomInfo[] game;
 	// Use this for initialization
 	void Start () {
 		instance = this;
@@ -54,7 +53,6 @@ public class MainMenu : MonoBehaviour {
 			}
 			if(GUI.Button(new Rect (0,110, 300, 50),"Mutliplayer")){
 				PhotonNetwork.ConnectUsingSettings("PhoneDefense");
-				game = PhotonNetwork.GetRoomList();
 				PhotonNetwork.playerName = MultiplayerManager.instance.PlayerName;
 			}
 			if(GUI.Button(new Rect (0,165, 300, 50),"Credits")){}
@@ -64,7 +62,7 @@ public class MainMenu : MonoBehaviour {
 		case "levelselection":
 			GUILayout.BeginArea(new Rect (10,250, Screen.width, 500));
 			if(GUI.Button(new Rect(0,0,450,50),"Geschlängelte Systeme")){
-				PlayerPrefs.SetString("online","Offline");
+				PlayerPrefs.SetString("online","Online");
 				PlayerPrefs.SetInt("Budget",10000);
 				PlayerPrefs.SetInt("InCome",3);
 				Application.LoadLevel("Geschlängelte_Systeme");
@@ -86,9 +84,6 @@ public class MainMenu : MonoBehaviour {
 				}
 
 			}
-			//if(GUI.Button(new Rect(0,165,300,50),"Greif an")) {
-				//game = PhotonNetwork.GetRoomList();
-			//}
 			if(GUI.Button(new Rect(0,220,300,50),"Zurück")){
 				PhotonNetwork.Disconnect();
 				auswahl = "mainmenu";

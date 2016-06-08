@@ -46,7 +46,7 @@ public class Turret_Placement : MonoBehaviour {
 				//Debug.Log(hit.collider.name);
 				if(lastHitObj){
 					lastHitObj.renderer.material = originalMat;	
-				}
+				}				
 				if(hit.collider.name.Equals("Plane")){
 					lastHitObj = hit.collider.gameObject;
 					originalMat = lastHitObj.renderer.material;
@@ -81,6 +81,7 @@ public class Turret_Placement : MonoBehaviour {
 					temp.y = (Random.Range(0,360));
 					newStructure.transform.localEulerAngles = temp;
 					lastHitObj.GetComponent<PlacementPlane>().PlacePlane = true;
+					strucureIndex = 0;
 				}
 			}
 		}

@@ -9,7 +9,7 @@ public class DiscriptionMenu : MonoBehaviour {
 	public GameObject discripMenu;
 	public GameObject GUIcam;
 
-	private Turret_MG_ORIGINAL lastHitComponent;	
+	private Turret_MG lastHitComponent;	
 	private GameObject lastHitObj;
 	private MGUpgrades upgrades;
 	private string dmgTxt;

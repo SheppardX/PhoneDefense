@@ -36,7 +36,6 @@ public class AttackGUI : MonoBehaviour {
 	private int layerMask = ~((1<<9)|(1<<8));
 	private AttackList list;
 	private bool menu;
-	private CameraMovement camMov;
 	private MinionUpgrade upgrade;
 	private float startTime = 0.0f;
 	private float duration = 58.0f;
@@ -47,7 +46,6 @@ public class AttackGUI : MonoBehaviour {
 	private int healthCostTxt;
 	private int speedCostTxt;
 	public int index;
-	private bool toggle= false;
 
 
 	public Vector3 SpielMenuTran {
@@ -80,7 +78,6 @@ public class AttackGUI : MonoBehaviour {
 		player = PlayerStats.instance;
 		instance = this;
 		list = AttackList.instance;
-		camMov = maincam.GetComponent<CameraMovement>();
 		index = 0;
 		menu = false;
 	}
@@ -158,13 +155,13 @@ public class AttackGUI : MonoBehaviour {
 				case "attackBtn":
 					if(Input.GetMouseButtonUp(0)){
 						list.UnitsName = unitsName;
-						UnitSpawn.instance.startWave();
+						spawn.startWave();
 					}
 				break;
 				case "DMG+":
 					if(Input.GetMouseButtonUp(0)){
-						if(upgrade.DamageLvl <= 4 && PlayerStats.instance.money > dmgCostTxt){	
-							PlayerStats.instance.money -= dmgCostTxt;
+						if(upgrade.DamageLvl <= 4 && player.money > dmgCostTxt){	
+							player.money -= dmgCostTxt;
 							upgrade.DamageLvl +=1;
 							upgradeRefresh();
 						}
@@ -172,8 +169,8 @@ public class AttackGUI : MonoBehaviour {
 					break;
 				case "HTL+":
 					if(Input.GetMouseButtonUp(0)){
-						if(upgrade.HealthLvl <= 4 && PlayerStats.instance.money > healthCostTxt){		
-							PlayerStats.instance.money -= healthCostTxt;
+						if(upgrade.HealthLvl <= 4 && player.money > healthCostTxt){		
+							player.money -= healthCostTxt;
 							upgrade.HealthLvl +=1;
 							upgradeRefresh();
 						}
@@ -181,8 +178,8 @@ public class AttackGUI : MonoBehaviour {
 					break;
 				case "SPEED+":
 					if(Input.GetMouseButtonUp(0)){
-						if(upgrade.SpeedLvl <= 4 && PlayerStats.instance.money > speedCostTxt){
-							PlayerStats.instance.money -= speedCostTxt;
+						if(upgrade.SpeedLvl <= 4 && player.money > speedCostTxt){
+							player.money -= speedCostTxt;
 							upgrade.SpeedLvl +=1;
 							upgradeRefresh();
 						}
@@ -201,9 +198,9 @@ public class AttackGUI : MonoBehaviour {
 			Right = new Vector3(Right.x,Right.y,2);
 			Left = new Vector3(Left.x,Left.y,2);
 		}
-		wave.text = UnitSpawn.instance.curWave.ToString ();
-		live.text = PlayerStats.instance.livePoints.ToString ();
-		money.text = PlayerStats.instance.money.ToString ();
+		wave.text = spawn.remainWave.ToString ();
+		live.text = player.setLivePoins.ToString ();
+		money.text = player.money.ToString ();
 	}
 
 	void upgradeRefresh(){

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 [RequireComponent (typeof(MGUpgrades))]
-[RequireComponent (typeof(Turret_MG_ORIGINAL))]
+[RequireComponent (typeof(Turret_MG))]
 
 public class DefUpgradeMenu : MonoBehaviour {
 	public TextMesh damage;
@@ -18,7 +18,7 @@ public class DefUpgradeMenu : MonoBehaviour {
 	public GameObject rgePlusBtn;
 
 	private GameObject lastHitObj;
-	private Turret_MG_ORIGINAL lastHitComponent;
+	private Upgrades lastHitComponent;
 	private MGUpgrades upgrades;
 	private CameraMovement camMov;
 	private int dmgTxt;
@@ -132,15 +132,24 @@ public class DefUpgradeMenu : MonoBehaviour {
 			RaycastHit hit = new RaycastHit();
 			if(Physics.Raycast(ray, out hit, 1000, layerMask)||Physics.Raycast(rayMain, out hit, 1000, layerMask)){
 				switch (hit.collider.name) {
-				case "MGturret":
+				case "Turret_MG":
 					if(Input.GetMouseButtonUp(0)){
 						upgradeopen = !upgradeopen;					
 						lastHitObj = hit.collider.gameObject;
-					//	CamTran = new Vector3(lastHitObj.transform.position.x,CamTran.y,lastHitObj.transform.position.z-15);
-						lastHitComponent = hit.collider.GetComponent<Turret_MG_ORIGINAL>();
+						CamTran = new Vector3(lastHitObj.transform.position.x,CamTran.y,lastHitObj.transform.position.z-15);
+						lastHitComponent = hit.collider.GetComponent<Upgrades>();
 						upgradeRefresh();
 					}
 				break;
+				case "Turret_Patroit":
+					if(Input.GetMouseButtonUp(0)){
+						upgradeopen = !upgradeopen;					
+						lastHitObj = hit.collider.gameObject;
+						CamTran = new Vector3(lastHitObj.transform.position.x,CamTran.y,lastHitObj.transform.position.z-15);
+						lastHitComponent = hit.collider.GetComponent<Upgrades>();
+						upgradeRefresh();
+					}
+					break;
 				case "DMG+":
 					if(Input.GetMouseButtonUp(0)){
 						if(lastHitComponent.DamageLvl <= 4 && PlayerStats.instance.money > dmgCostTxt){	
